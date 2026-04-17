@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f1115" />
+  <title>Screen Recorder</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Screen Recorder</h1>
+    <nav class="tabs" role="tablist">
+      <button class="tab" data-view="recorder" role="tab" aria-selected="true">Record</button>
+      <button class="tab" data-view="library" role="tab" aria-selected="false">Library</button>
+    </nav>
+  </header>
+
+  <main id="view-root" class="view-root"></main>
+
+  <template id="tpl-recorder">
+    <section class="recorder">
+      <div class="preview-wrap">
+        <video id="preview" autoplay muted playsinline></video>
+        <div class="preview-empty" id="preview-empty">
+          <p>No active recording.</p>
+          <p class="hint">Pick a screen, window, or tab when prompted.</p>
+        </div>
+      </div>
+      <div class="controls">
+        <button id="btn-start" class="primary">Start recording</button>
+        <button id="btn-stop" class="danger" disabled>Stop</button>
+        <span id="timer" class="timer" aria-live="polite">00:00</span>
+      </div>
+      <details class="options">
+        <summary>Options</summary>
+        <label><input type="checkbox" id="opt-audio" checked /> Capture system audio (if available)</label>
+        <label><input type="checkbox" id="opt-mic" /> Include microphone</label>
+      </details>
+      <div class="install-hint">
+        <button id="btn-get-bookmarklet" class="ghost">Get launcher bookmarklet</button>
+      </div>
+    </section>
+  </template>
+
+  <template id="tpl-library">
+    <section class="library">
+      <ul id="recordings" class="recordings"></ul>
+      <p id="library-empty" class="empty">No recordings saved yet.</p>
+    </section>
+  </template>
+
+  <template id="tpl-trimmer">
+    <section class="trimmer">
+      <button class="back" id="btn-back">&larr; Back to library</button>
+      <h2 id="trim-title"></h2>
+      <video id="trim-video" controls playsinline></video>
+      <div class="trim-range">
+        <label>Start <input type="range" id="trim-start" min="0" max="100" step="0.01" value="0" /></label>
+        <label>End <input type="range" id="trim-end" min="0" max="100" step="0.01" value="100" /></label>
+        <div class="trim-readout">
+          <span id="trim-start-read">0.00s</span> &rarr; <span id="trim-end-read">0.00s</span>
+          (<span id="trim-duration-read">0.00s</span>)
+        </div>
+      </div>
+      <div class="controls">
+        <button id="btn-preview" class="ghost">Preview range</button>
+        <button id="btn-export" class="primary">Export trimmed</button>
+        <button id="btn-download-original" class="ghost">Download original</button>
+      </div>
+      <progress id="export-progress" value="0" max="1" hidden></progress>
+    </section>
+  </template>
+
+  <dialog id="bookmarklet-dialog">
+    <form method="dialog">
+      <h3>Launcher bookmarklet</h3>
+      <p>Drag the link below to your bookmarks bar. Clicking it opens the recorder and auto-starts.</p>
+      <p><a id="bookmarklet-link" href="#">Record Screen</a></p>
+      <p class="hint">Or copy this URL:</p>
+      <textarea id="bookmarklet-source" readonly rows="4"></textarea>
+      <menu><button value="close">Close</button></menu>
+    </form>
+  </dialog>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
