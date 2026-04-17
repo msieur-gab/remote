@@ -19,6 +19,32 @@
     });
   }
 
+  // Nav dropdowns: close-on-outside-click, Escape, mutual exclusion, link-click.
+  const dropdowns = Array.from(document.querySelectorAll('[data-dropdown]'));
+  if (dropdowns.length) {
+    const closeAll = (except) => {
+      dropdowns.forEach((d) => { if (d !== except) d.open = false; });
+    };
+    dropdowns.forEach((d) => {
+      d.addEventListener('toggle', () => { if (d.open) closeAll(d); });
+      d.addEventListener('click', (e) => {
+        if (e.target.closest('.dropdown-list a, .dropdown-footer a')) d.open = false;
+      });
+    });
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('[data-dropdown]')) closeAll(null);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const open = dropdowns.find((d) => d.open);
+        if (open) {
+          open.open = false;
+          open.querySelector('summary').focus();
+        }
+      }
+    });
+  }
+
   // Highlight the current in-view section in the nav.
   const navLinks = Array.from(document.querySelectorAll('.site-nav a[href*="#"]'));
   const byId = new Map();
