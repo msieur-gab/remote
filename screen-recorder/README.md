@@ -57,4 +57,4 @@ screen-recorder/
 ## Notes
 
 - Trimming uses `MediaRecorder` + `HTMLVideoElement.captureStream()` to re-encode the selected range. It is lossy and roughly real-time. A future pass could bundle `ffmpeg.wasm` behind a toggle for frame-accurate, stream-copy trimming.
-- iOS Safari does not support `getDisplayMedia()`; recording there is not possible. Desktop Safari, Chrome, Edge, and Firefox are supported.
+- **Mobile browsers cannot record the screen.** `getDisplayMedia()` is not implemented on Chrome/Firefox Android or on iOS Safari. Android screen capture is gated behind the native `MediaProjection` API that is unavailable to the web, and iOS exposes screen recording only through Control Center. Desktop Chrome, Edge, Firefox, and Safari are supported. The library and trimmer still work on mobile for recordings made elsewhere.

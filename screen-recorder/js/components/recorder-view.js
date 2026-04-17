@@ -16,6 +16,22 @@ export function renderRecorderView(root, { autostart = false, onSaved, onOpenBoo
   const optMic = $('#opt-mic', view);
   const btnBookmarklet = $('#btn-get-bookmarklet', view);
 
+  btnBookmarklet.addEventListener('click', () => onOpenBookmarklet?.());
+
+  const support = checkSupport();
+  if (!support.ok) {
+    btnStart.disabled = true;
+    btnStop.disabled = true;
+    previewEmpty.innerHTML = '';
+    const h = document.createElement('p');
+    h.textContent = 'Screen recording is unavailable in this browser.';
+    const why = document.createElement('p');
+    why.className = 'hint';
+    why.textContent = support.reason;
+    previewEmpty.append(h, why);
+    return { destroy() {} };
+  }
+
   const recorder = new ScreenRecorder();
 
   recorder.addEventListener('tick', (e) => {
@@ -56,7 +72,6 @@ export function renderRecorderView(root, { autostart = false, onSaved, onOpenBoo
 
   btnStart.addEventListener('click', start);
   btnStop.addEventListener('click', stop);
-  btnBookmarklet.addEventListener('click', () => onOpenBookmarklet?.());
 
   if (autostart) {
     queueMicrotask(() => start());
@@ -67,4 +82,23 @@ export function renderRecorderView(root, { autostart = false, onSaved, onOpenBoo
       if (recorder.isRecording) recorder.stop();
     }
   };
+}
+
+function checkSupport() {
+  if (!window.isSecureContext) {
+    return { ok: false, reason: 'Open the app over HTTPS (or http://localhost) — screen capture requires a secure context.' };
+  }
+  if (!navigator.mediaDevices?.getDisplayMedia) {
+    const ua = navigator.userAgent;
+    const isAndroid = /Android/i.test(ua);
+    const isIOS = /iPhone|iPad|iPod/i.test(ua);
+    if (isAndroid) {
+      return { ok: false, reason: 'Chrome and Firefox on Android do not expose getDisplayMedia(). Android screen capture is gated behind the native MediaProjection API, so no web app can record the screen. Use a desktop browser to record.' };
+    }
+    if (isIOS) {
+      return { ok: false, reason: 'Safari on iOS does not support getDisplayMedia(). Use iOS Control Center screen recording, or a desktop browser.' };
+    }
+    return { ok: false, reason: 'This browser does not expose getDisplayMedia(). Try Chrome, Edge, Firefox, or Safari on desktop.' };
+  }
+  return { ok: true };
 }
