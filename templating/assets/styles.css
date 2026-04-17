@@ -276,81 +276,67 @@ section {
 
 .dropdown-panel {
   position: absolute;
-  top: calc(100% + 0.65rem);
-  left: -1rem;
-  min-width: 20rem;
+  top: calc(100% + 0.45rem);
+  left: -0.5rem;
+  min-width: 14rem;
+  max-width: 22rem;
   background: var(--surface);
   border: 1px solid var(--rule);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   box-shadow: var(--shadow);
-  padding: 1rem;
+  padding: 0.35rem;
   z-index: 20;
-  animation: dropdown-in 0.16s ease-out;
+  animation: dropdown-in 0.12s ease-out;
 }
 
 @keyframes dropdown-in {
-  from { opacity: 0; transform: translateY(-4px); }
+  from { opacity: 0; transform: translateY(-3px); }
   to   { opacity: 1; transform: translateY(0); }
-}
-
-.dropdown-label {
-  font-family: var(--font-ui);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.72rem;
-  color: var(--ink-muted);
-  margin: 0 0.5rem 0.5rem;
 }
 
 .dropdown-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  gap: 0.15rem;
 }
 
 .dropdown-list a {
-  display: grid;
-  gap: 0.15rem;
-  padding: 0.55rem 0.65rem;
-  border-radius: var(--radius-sm);
+  display: block;
+  padding: 0.45rem 0.65rem;
+  border-radius: calc(var(--radius-sm) - 2px);
   text-decoration: none;
   color: var(--ink);
   font-family: var(--font-ui);
+  font-size: 0.9rem;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .dropdown-list a:hover,
 .dropdown-list a:focus-visible {
   background: var(--accent-soft);
+  color: var(--ink);
   outline: none;
 }
 
-.dropdown-title {
-  font-size: 0.95rem;
-  line-height: 1.3;
+.dropdown-list a[aria-current="page"] {
+  color: var(--accent);
+  font-weight: 500;
 }
 
-.dropdown-desc {
-  font-size: 0.8rem;
+.dropdown-sep {
+  height: 1px;
+  margin: 0.3rem 0.5rem;
+  background: var(--rule);
+  list-style: none;
+}
+
+.dropdown-list a.dropdown-all {
   color: var(--ink-muted);
+  font-size: 0.82rem;
 }
-
-.dropdown-list a:hover .dropdown-desc,
-.dropdown-list a:focus-visible .dropdown-desc {
-  color: var(--ink-soft);
-}
-
-.dropdown-footer {
-  margin: 0.75rem 0.5rem 0;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--rule);
-  font-family: var(--font-ui);
-  font-size: 0.85rem;
-}
-
-.dropdown-footer a { text-decoration: none; }
-.dropdown-footer a:hover { text-decoration: underline; }
 
 @media (max-width: 42rem) {
   .dropdown { display: block; }
@@ -363,14 +349,17 @@ section {
   .dropdown-panel {
     position: static;
     min-width: 0;
+    max-width: none;
     box-shadow: none;
     border: 0;
-    padding: 0 0 0.75rem 1rem;
+    padding: 0 0 0.5rem 1rem;
     animation: none;
   }
-  .dropdown-list a { padding: 0.55rem 0; }
-  .dropdown-label { margin-left: 0; }
-  .dropdown-footer { margin-left: 0; }
+  .dropdown-list a {
+    padding: 0.55rem 0;
+    white-space: normal;
+  }
+  .dropdown-sep { margin: 0.3rem 0; }
 }
 
 /* Hero -------------------------------------------------------------------- */
