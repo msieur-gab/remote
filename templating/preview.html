@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fragment preview — Atelier</title>
+  <meta name="robots" content="noindex" />
+  <link rel="stylesheet" href="./assets/styles.css" />
+</head>
+<body>
+  <div class="preview-shell">
+    <h1>Fragment preview</h1>
+    <p class="muted">
+      Dev-only harness. Each block below is loaded from
+      <code>./fragments/</code> at runtime so you can iterate on a single
+      fragment without touching the composed pages. Production output comes
+      from the build step, which inlines the same files into
+      <a href="./index.html">index.html</a> and
+      <a href="./article.html">article.html</a>.
+    </p>
+
+    <section class="preview-block">
+      <header>fragments/header.html</header>
+      <div data-include="./fragments/header.html"></div>
+    </section>
+
+    <section class="preview-block">
+      <header>fragments/hero.html</header>
+      <div data-include="./fragments/hero.html"></div>
+    </section>
+
+    <section class="preview-block">
+      <header>fragments/card.html</header>
+      <div data-include="./fragments/card.html"></div>
+    </section>
+
+    <section class="preview-block">
+      <header>fragments/footer.html</header>
+      <div data-include="./fragments/footer.html"></div>
+    </section>
+  </div>
+
+  <script>
+    // Dev-only fragment loader. NOT used in production — the build step
+    // inlines fragments into each page so crawlers see complete markup.
+    (async () => {
+      const slots = document.querySelectorAll('[data-include]');
+      await Promise.all(Array.from(slots).map(async (slot) => {
+        const url = slot.getAttribute('data-include');
+        try {
+          const res = await fetch(url);
+          slot.innerHTML = await res.text();
+        } catch (e) {
+          slot.textContent = 'Failed to load ' + url + ' — serve this folder over HTTP.';
+        }
+      }));
+      // Re-run enhancement once fragments are in the DOM.
+      const s = document.createElement('script');
+      s.src = './assets/enhance.js';
+      document.body.appendChild(s);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atelier — Plain HTML, built for humans and machines</title>
+  <meta name="description" content="A small studio that builds marketing sites and documentation in semantic HTML, enhanced with just enough JavaScript." />
+  <link rel="canonical" href="https://example.com/" />
+  <link rel="stylesheet" href="./assets/styles.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Atelier",
+    "url": "https://example.com/",
+    "description": "A small studio that builds marketing sites and documentation in semantic HTML.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Atelier",
+      "url": "https://example.com/"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- fragment: header.html (inlined at build time) -->
+  <header class="site-header" data-fragment="header">
+    <a class="brand" href="/">
+      <span class="brand-mark" aria-hidden="true">◆</span>
+      <span class="brand-name">Atelier</span>
+    </a>
+
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      data-toggle="nav"
+    >
+      <span class="sr-only">Menu</span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+    </button>
+
+    <nav id="site-nav" class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#writing">Writing</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- fragment: hero.html -->
+    <section class="hero" id="top" data-fragment="hero">
+      <p class="eyebrow">Studio Journal</p>
+      <h1>Design systems that read like prose.</h1>
+      <p class="lede">
+        We build marketing sites and documentation in plain HTML, enhanced with
+        just enough JavaScript to feel alive &mdash; and nothing that would hide
+        the words from a crawler or an assistant.
+      </p>
+      <p class="cta-row">
+        <a class="button button-primary" href="#work">See recent work</a>
+        <a class="button" href="#writing">Read the journal</a>
+      </p>
+    </section>
+
+    <section class="section" id="work" aria-labelledby="work-title">
+      <header class="section-head">
+        <h2 id="work-title">Selected work</h2>
+        <a href="/work.html">All projects &rarr;</a>
+      </header>
+
+      <div class="card-grid">
+        <!-- fragment: card.html (variant: project) -->
+        <article class="card">
+          <p class="card-meta">
+            <time datetime="2026-02">Feb 2026</time>
+            <span class="card-tag">Site</span>
+          </p>
+          <h3 class="card-title">
+            <a href="/work/north-press.html">North Press — editorial platform</a>
+          </h3>
+          <p class="card-excerpt">
+            A static publishing system that outputs clean, semantic pages and
+            JSON-LD for every article, with a tiny progressive-enhancement layer.
+          </p>
+          <p class="card-cta"><a href="/work/north-press.html">Case study &rarr;</a></p>
+        </article>
+
+        <article class="card">
+          <p class="card-meta">
+            <time datetime="2025-11">Nov 2025</time>
+            <span class="card-tag">Docs</span>
+          </p>
+          <h3 class="card-title">
+            <a href="/work/halyard.html">Halyard — developer documentation</a>
+          </h3>
+          <p class="card-excerpt">
+            Plain-HTML docs with anchored sections, generous typography, and
+            schema.org TechArticle markup for every page.
+          </p>
+          <p class="card-cta"><a href="/work/halyard.html">Case study &rarr;</a></p>
+        </article>
+
+        <article class="card">
+          <p class="card-meta">
+            <time datetime="2025-09">Sep 2025</time>
+            <span class="card-tag">Brand</span>
+          </p>
+          <h3 class="card-title">
+            <a href="/work/meridian.html">Meridian — studio identity</a>
+          </h3>
+          <p class="card-excerpt">
+            A refreshed wordmark, a four-page site, and a build script that
+            assembles everything from partials in under a second.
+          </p>
+          <p class="card-cta"><a href="/work/meridian.html">Case study &rarr;</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="writing" aria-labelledby="writing-title">
+      <header class="section-head">
+        <h2 id="writing-title">Recent writing</h2>
+        <a href="/writing/">Archive &rarr;</a>
+      </header>
+
+      <div class="card-grid">
+        <!-- fragment: card.html (variant: essay) -->
+        <article class="card">
+          <p class="card-meta">
+            <time datetime="2026-03-18">March 18, 2026</time>
+            <span class="card-tag">Essay</span>
+          </p>
+          <h3 class="card-title">
+            <a href="./article.html">Readable by machines, lovable by humans</a>
+          </h3>
+          <p class="card-excerpt">
+            Semantic HTML, generous typography, and a narrow JavaScript layer
+            can coexist with strong generative-engine optimization.
+          </p>
+          <p class="card-cta"><a href="./article.html">Continue reading &rarr;</a></p>
+        </article>
+
+        <article class="card">
+          <p class="card-meta">
+            <time datetime="2026-01-22">January 22, 2026</time>
+            <span class="card-tag">Notes</span>
+          </p>
+          <h3 class="card-title">
+            <a href="/writing/light-dom-fragments.html">Why we left the shadow DOM</a>
+          </h3>
+          <p class="card-excerpt">
+            Encapsulation is useful, but not when the audience includes an LLM
+            that never opens a shadow root.
+          </p>
+          <p class="card-cta"><a href="/writing/light-dom-fragments.html">Continue reading &rarr;</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="about" aria-labelledby="about-title">
+      <header class="section-head">
+        <h2 id="about-title">About the studio</h2>
+      </header>
+      <div class="prose">
+        <p>
+          Atelier is a two-person practice focused on content-first websites.
+          We favour plain HTML, system typography, and build tools small enough
+          to read in an afternoon.
+        </p>
+        <p>
+          Our clients are publishers, libraries, and small software teams who
+          care about how their words travel &mdash; through browsers, through
+          feed readers, and increasingly through machines that read on behalf
+          of a person.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="contact" aria-labelledby="contact-title">
+      <header class="section-head">
+        <h2 id="contact-title">Start a conversation</h2>
+      </header>
+      <div class="prose">
+        <p>
+          Email <a href="mailto:hello@example.com">hello@example.com</a> with a
+          few sentences about what you are making. We reply within two working
+          days.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- fragment: footer.html -->
+  <footer class="site-footer" data-fragment="footer">
+    <div class="footer-grid">
+      <div>
+        <p class="brand">
+          <span class="brand-mark" aria-hidden="true">◆</span>
+          <span class="brand-name">Atelier</span>
+        </p>
+        <p class="muted">Plain HTML, readable by humans and machines.</p>
+      </div>
+      <nav aria-label="Footer">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#writing">Writing</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h2>Elsewhere</h2>
+        <ul>
+          <li><a href="https://github.com/" rel="me">GitHub</a></li>
+          <li><a href="mailto:hello@example.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy muted">&copy; 2026 Atelier. Crafted in light DOM.</p>
+  </footer>
+
+  <script src="./assets/enhance.js" defer></script>
+</body>
+</html>

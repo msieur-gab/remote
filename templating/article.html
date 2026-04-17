@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Readable by machines, lovable by humans — Atelier</title>
+  <meta name="description" content="How semantic HTML, generous typography, and a narrow JavaScript layer can coexist with generative-engine optimization." />
+  <link rel="canonical" href="https://example.com/writing/readable-by-machines.html" />
+  <link rel="stylesheet" href="./assets/styles.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Readable by machines, lovable by humans",
+    "description": "How semantic HTML, generous typography, and a narrow JavaScript layer can coexist with generative-engine optimization.",
+    "datePublished": "2026-03-18",
+    "dateModified": "2026-03-18",
+    "author": {
+      "@type": "Person",
+      "name": "Atelier"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Atelier",
+      "url": "https://example.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://example.com/writing/readable-by-machines.html"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- fragment: header.html (same source as index.html) -->
+  <header class="site-header" data-fragment="header">
+    <a class="brand" href="./index.html">
+      <span class="brand-mark" aria-hidden="true">◆</span>
+      <span class="brand-name">Atelier</span>
+    </a>
+
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      data-toggle="nav"
+    >
+      <span class="sr-only">Menu</span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+    </button>
+
+    <nav id="site-nav" class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="./index.html#work">Work</a></li>
+        <li><a href="./index.html#writing">Writing</a></li>
+        <li><a href="./index.html#about">About</a></li>
+        <li><a href="./index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <article class="article">
+      <header>
+        <p class="eyebrow">Essay</p>
+        <h1>Readable by machines, lovable by humans</h1>
+        <p class="meta">
+          <time datetime="2026-03-18">March 18, 2026</time> &middot; 6 min read
+        </p>
+      </header>
+
+      <p>
+        Three years ago, the question was whether search engines could read
+        your JavaScript. Today the question is whether a language model can
+        quote your page back to a user without hallucinating a paragraph you
+        did not write. The answer is the same in both cases: put the words in
+        the HTML.
+      </p>
+
+      <h2>The split between markup and behaviour</h2>
+
+      <p>
+        We compose pages from small light-DOM fragments &mdash; a header, a
+        card, a footer &mdash; and inline them at build time. The browser sees
+        one continuous document. A crawler sees one continuous document. Only
+        the editor sees fragments.
+      </p>
+
+      <p>
+        JavaScript comes in later, via a single deferred script. It finds
+        existing elements by their <code>data-*</code> attributes and adds
+        listeners. It does not generate DOM, and it does not wrap anything in
+        a shadow root.
+      </p>
+
+      <blockquote>
+        If removing the script still leaves you with a readable page, you have
+        the split right.
+      </blockquote>
+
+      <h2>Where JSON-LD fits</h2>
+
+      <p>
+        Each page carries its own <code>application/ld+json</code> block in
+        the <code>&lt;head&gt;</code>, generated from the same front-matter
+        that produced the page. No runtime injection, no duplicate source of
+        truth.
+      </p>
+
+      <h2>What we gave up</h2>
+
+      <p>
+        Shadow DOM encapsulation, mostly. It is a lovely feature for
+        application UIs and a poor fit for content sites whose audience now
+        includes assistants that never open a shadow root. For a marketing
+        site or a journal, the tradeoff is easy.
+      </p>
+    </article>
+  </main>
+
+  <!-- fragment: footer.html -->
+  <footer class="site-footer" data-fragment="footer">
+    <div class="footer-grid">
+      <div>
+        <p class="brand">
+          <span class="brand-mark" aria-hidden="true">◆</span>
+          <span class="brand-name">Atelier</span>
+        </p>
+        <p class="muted">Plain HTML, readable by humans and machines.</p>
+      </div>
+      <nav aria-label="Footer">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href="./index.html#work">Work</a></li>
+          <li><a href="./index.html#writing">Writing</a></li>
+          <li><a href="./index.html#about">About</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h2>Elsewhere</h2>
+        <ul>
+          <li><a href="https://github.com/" rel="me">GitHub</a></li>
+          <li><a href="mailto:hello@example.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy muted">&copy; 2026 Atelier. Crafted in light DOM.</p>
+  </footer>
+
+  <script src="./assets/enhance.js" defer></script>
+</body>
+</html>
