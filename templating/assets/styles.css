@@ -144,7 +144,7 @@ section {
   font-size: 1.1rem;
 }
 
-.site-nav ul {
+.site-nav > ul {
   display: flex;
   gap: 1.5rem;
   list-style: none;
@@ -217,16 +217,16 @@ section {
   .site-nav[data-open="true"] {
     max-height: 20rem;
   }
-  .site-nav ul {
+  .site-nav > ul {
     flex-direction: column;
     gap: 0;
     padding: 0.5rem var(--gutter) 1rem;
   }
-  .site-nav li {
+  .site-nav > ul > li {
     border-bottom: 1px solid var(--rule);
   }
-  .site-nav li:last-child { border-bottom: 0; }
-  .site-nav a {
+  .site-nav > ul > li:last-child { border-bottom: 0; }
+  .site-nav > ul > li > a {
     display: block;
     padding: 0.9rem 0;
     font-size: 1rem;
@@ -277,10 +277,9 @@ section {
 .dropdown-panel {
   position: absolute;
   top: calc(100% + 0.45rem);
-  left: -0.5rem;
-  width: max-content;
-  min-width: 12rem;
-  max-width: min(16rem, calc(100vw - 2rem));
+  left: 0;
+  width: 16rem;
+  max-width: calc(100vw - 2rem);
   background: var(--surface);
   border: 1px solid var(--rule);
   border-radius: var(--radius-sm);
@@ -288,11 +287,6 @@ section {
   padding: 0.35rem;
   z-index: 20;
   animation: dropdown-in 0.12s ease-out;
-}
-
-.nav-group ~ .nav-group .dropdown-panel {
-  left: auto;
-  right: -0.5rem;
 }
 
 @keyframes dropdown-in {
@@ -308,15 +302,13 @@ section {
 
 .dropdown-list a {
   display: block;
-  padding: 0.45rem 0.65rem;
+  padding: 0.55rem 0.7rem;
   border-radius: calc(var(--radius-sm) - 2px);
   text-decoration: none;
   color: var(--ink);
   font-family: var(--font-ui);
   font-size: 0.9rem;
-  line-height: 1.35;
-  white-space: normal;
-  overflow-wrap: anywhere;
+  line-height: 1.4;
 }
 
 .dropdown-list a:hover,
