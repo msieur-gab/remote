@@ -278,8 +278,9 @@ section {
   position: absolute;
   top: calc(100% + 0.45rem);
   left: -0.5rem;
-  min-width: 14rem;
-  max-width: 22rem;
+  width: max-content;
+  min-width: 12rem;
+  max-width: min(16rem, calc(100vw - 2rem));
   background: var(--surface);
   border: 1px solid var(--rule);
   border-radius: var(--radius-sm);
@@ -287,6 +288,11 @@ section {
   padding: 0.35rem;
   z-index: 20;
   animation: dropdown-in 0.12s ease-out;
+}
+
+.nav-group ~ .nav-group .dropdown-panel {
+  left: auto;
+  right: -0.5rem;
 }
 
 @keyframes dropdown-in {
@@ -309,9 +315,8 @@ section {
   font-family: var(--font-ui);
   font-size: 0.9rem;
   line-height: 1.35;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .dropdown-list a:hover,
