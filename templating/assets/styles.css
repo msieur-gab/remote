@@ -1,12 +1,13 @@
 :root {
-  --bg: #fbfaf7;
+  --bg: #f2f4f4;
   --surface: #ffffff;
-  --ink: #1a1a1a;
-  --ink-soft: #555;
-  --ink-muted: #888;
-  --accent: #b5542b;
-  --accent-soft: #f1d9c9;
-  --rule: #e8e4dc;
+  --ink: #17181a;
+  --ink-soft: #44484b;
+  --ink-muted: #7e8488;
+  --accent: #d2fb3e;
+  --accent-ink: #101112;
+  --accent-soft: #eaffb4;
+  --rule: #dadde0;
   --radius: 14px;
   --radius-sm: 8px;
   --max: 68rem;
@@ -14,22 +15,23 @@
   --lede-size: clamp(1.05rem, 1.1vw + 0.9rem, 1.25rem);
   --h1-size: clamp(2.2rem, 4vw + 1rem, 4rem);
   --h2-size: clamp(1.5rem, 1.6vw + 1rem, 2.2rem);
-  --font-body: ui-serif, "Iowan Old Style", "Charter", Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.05);
+  --font-body: "InterVariable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-ui: var(--font-body);
+  --shadow: 0 1px 2px rgba(20, 22, 25, 0.04), 0 8px 24px rgba(20, 22, 25, 0.06);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #141311;
-    --surface: #1c1b18;
-    --ink: #f3efe6;
-    --ink-soft: #c3bdb0;
-    --ink-muted: #8a8578;
-    --accent: #e88c5c;
-    --accent-soft: #3a2718;
-    --rule: #2a2824;
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+    --bg: #0f1012;
+    --surface: #17191c;
+    --ink: #f1f3f4;
+    --ink-soft: #c1c5c8;
+    --ink-muted: #858a8e;
+    --accent: #d4fd3e;
+    --accent-ink: #101112;
+    --accent-soft: #3e4a17;
+    --rule: #272a2e;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.4);
   }
 }
 
@@ -58,19 +60,27 @@ img {
 }
 
 a {
-  color: var(--accent);
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
+  color: var(--ink);
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 
 a:hover {
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 3px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 h1, h2, h3 {
   font-family: var(--font-body);
-  letter-spacing: -0.01em;
-  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
   margin: 0 0 0.5em;
 }
 
@@ -93,10 +103,22 @@ h3 { font-size: 1.25rem; line-height: 1.3; }
 .eyebrow {
   font-family: var(--font-ui);
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: 0.78rem;
-  color: var(--accent);
+  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-soft);
   margin: 0 0 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 1.25rem;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
 }
 
 /* Layout ------------------------------------------------------------------ */
@@ -401,9 +423,14 @@ section {
 .button:hover { transform: translateY(-1px); }
 
 .button-primary {
-  background: var(--ink);
-  color: var(--bg);
-  border-color: var(--ink);
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+  font-weight: 500;
+}
+
+.button-primary:hover {
+  filter: brightness(0.96);
 }
 
 /* Sections ---------------------------------------------------------------- */
@@ -454,7 +481,7 @@ section {
 
 .card:hover {
   transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--rule));
+  border-color: color-mix(in srgb, var(--ink) 18%, var(--rule));
 }
 
 .card-meta {
@@ -468,11 +495,12 @@ section {
 }
 
 .card-tag {
-  background: var(--accent-soft);
-  color: var(--accent);
-  padding: 0.1rem 0.55rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 0.15rem 0.55rem;
   border-radius: 999px;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
+  font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -488,8 +516,10 @@ section {
 }
 
 .card-title a:hover {
-  color: var(--accent);
   text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
 }
 
 .card-excerpt {
