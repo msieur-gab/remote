@@ -2,6 +2,27 @@
 // The markup above must remain useful without this script.
 
 (function () {
+  // Theme toggle — persists choice in localStorage; OS preference wins
+  // when no choice is stored. The pre-paint script in <head> sets the
+  // data-theme attribute before first paint to avoid a flash.
+  const themeToggle = document.querySelector('[data-toggle="theme"]');
+  if (themeToggle) {
+    const active = () => {
+      const explicit = document.documentElement.getAttribute('data-theme');
+      if (explicit === 'light' || explicit === 'dark') return explicit;
+      return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    };
+    const apply = (theme) => {
+      document.documentElement.setAttribute('data-theme', theme);
+      themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
+      try { localStorage.setItem('theme', theme); } catch (_) {}
+    };
+    themeToggle.setAttribute('aria-pressed', String(active() === 'dark'));
+    themeToggle.addEventListener('click', () => {
+      apply(active() === 'dark' ? 'light' : 'dark');
+    });
+  }
+
   // Mobile nav toggle — finds an existing button + nav, never injects markup.
   const toggle = document.querySelector('[data-toggle="nav"]');
   const nav = toggle && document.getElementById(toggle.getAttribute('aria-controls'));
