@@ -900,6 +900,175 @@ section {
   display: none !important;
 }
 
+/* Case study (scroll-sync) ----------------------------------------------- */
+
+.case-study {
+  padding: clamp(2rem, 5vw, 3.5rem) var(--gutter) clamp(3rem, 6vw, 5rem);
+  max-width: calc(var(--max) + 10rem);
+  margin-inline: auto;
+}
+
+.case-study-head {
+  max-width: 42rem;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+.case-study-head h1 {
+  margin-top: 0.25rem;
+}
+
+.case-study-head .lede {
+  margin-top: 1rem;
+}
+
+.case-study-body {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3rem);
+}
+
+.case-study-content {
+  min-width: 0;
+  max-width: 38rem;
+}
+
+.case-study-content > p,
+.case-study-content > ul,
+.case-study-content > ol {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin: 0 0 1.25rem;
+}
+
+.case-study-content > h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
+}
+
+.case-study-content figure[data-sync] {
+  margin: 2rem 0;
+}
+
+.case-study-content figure[data-sync] img,
+.case-study-content figure[data-sync] .fig-placeholder {
+  width: 100%;
+  border-radius: var(--radius);
+  display: block;
+}
+
+.case-study-content figure[data-sync] figcaption {
+  margin-top: 0.6rem;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+}
+
+.sync-anchor {
+  display: block;
+  height: 0;
+}
+
+@media (min-width: 60rem) {
+  .case-study-body {
+    grid-template-columns: 3fr 2fr;
+    align-items: start;
+  }
+
+  .case-study-content {
+    grid-column: 2;
+    grid-row: 1;
+    max-width: none;
+  }
+
+  [data-scroll-sync][data-hydrated] .sync-stage {
+    grid-column: 1;
+    grid-row: 1;
+    display: block;
+    position: sticky;
+    top: 5rem;
+    height: calc(100vh - 7rem);
+    min-height: 28rem;
+  }
+
+  [data-scroll-sync][data-hydrated] .case-study-content figure[data-sync] {
+    display: none;
+  }
+}
+
+.sync-stage { display: none; }
+
+.sync-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  box-shadow: var(--shadow);
+}
+
+.sync-frame > figure {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  pointer-events: none;
+}
+
+.sync-frame > figure.is-active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sync-frame > figure {
+    transition: opacity 0.15s linear;
+    transform: none;
+  }
+}
+
+.sync-frame > figure > img,
+.sync-frame > figure > .fig-placeholder {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  display: block;
+}
+
+.sync-frame figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--rule);
+}
+
+/* Inline SVG placeholder used in the demo case study. A real project would
+   swap these for <img> elements. */
+.fig-placeholder {
+  aspect-ratio: 4 / 3;
+  background: var(--accent-soft);
+}
+
+.sync-frame > figure > .fig-placeholder {
+  aspect-ratio: auto;
+}
+
 /* Preview harness --------------------------------------------------------- */
 
 .preview-shell {

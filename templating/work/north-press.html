@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>North Press — an editorial platform in ten files · Atelier</title>
+  <meta name="description" content="Case study: a static publishing system for a 40-year-old literary journal, built from small light-DOM fragments and inlined at build time." />
+  <link rel="canonical" href="https://example.com/work/north-press.html" />
+  <script>
+    (function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <link rel="preconnect" href="https://rsms.me" crossorigin>
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="../assets/styles.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "headline": "North Press — an editorial platform in ten files",
+    "description": "A static publishing system for a 40-year-old literary journal, built from small light-DOM fragments and inlined at build time.",
+    "datePublished": "2026-02-10",
+    "author": { "@type": "Organization", "name": "Atelier" },
+    "about": "Editorial platform, static site generation, semantic HTML"
+  }
+  </script>
+</head>
+<body>
+
+  <!-- fragment: header-mega.html -->
+  <header class="site-header site-header-mega" data-fragment="header-mega">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark" aria-hidden="true">◆</span>
+      <span class="brand-name">Atelier</span>
+    </a>
+
+    <nav id="site-nav" class="site-nav" aria-label="Primary">
+      <ul>
+        <li class="nav-group">
+          <details class="dropdown" data-dropdown>
+            <summary>
+              Work
+              <span class="dropdown-chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="dropdown-panel" role="group" aria-label="Recent work">
+              <ul class="dropdown-list">
+                <li><a href="./north-press.html" aria-current="page">North Press</a></li>
+                <li><a href="./halyard.html">Halyard</a></li>
+                <li><a href="./meridian.html">Meridian</a></li>
+                <li><a href="./axon.html">Axon</a></li>
+                <li><a href="./ember.html">Ember</a></li>
+                <li role="separator" class="dropdown-sep"></li>
+                <li><a href="../work.html" class="dropdown-all">All projects &rarr;</a></li>
+              </ul>
+            </div>
+          </details>
+        </li>
+
+        <li class="nav-group">
+          <details class="dropdown" data-dropdown>
+            <summary>
+              Writing
+              <span class="dropdown-chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="dropdown-panel" role="group" aria-label="Recent writing">
+              <ul class="dropdown-list">
+                <li><a href="../article.html">Readable by machines, lovable by humans</a></li>
+                <li><a href="../writing.html" class="dropdown-all">Full archive &rarr;</a></li>
+              </ul>
+            </div>
+          </details>
+        </li>
+
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-tools">
+      <button
+        class="theme-toggle"
+        type="button"
+        aria-label="Toggle color theme"
+        aria-pressed="false"
+        data-toggle="theme"
+      >
+        <svg class="theme-icon theme-icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+          <circle cx="10" cy="10" r="3.25"/>
+          <path d="M10 2.5v1.5M10 16v1.5M4.25 4.25l1.06 1.06M14.69 14.69l1.06 1.06M2.5 10h1.5M16 10h1.5M4.25 15.75l1.06-1.06M14.69 5.31l1.06-1.06"/>
+        </svg>
+        <svg class="theme-icon theme-icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M17 11.5A7.5 7.5 0 1 1 8.5 3 5.5 5.5 0 0 0 17 11.5z"/>
+        </svg>
+      </button>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        data-toggle="nav"
+      >
+        <span class="sr-only">Menu</span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <article class="case-study" data-scroll-sync>
+      <header class="case-study-head">
+        <p class="eyebrow">Case study · Feb 2026</p>
+        <h1>North Press — an editorial platform in ten files</h1>
+        <p class="lede">
+          A static publishing system for a 40-year-old literary journal.
+          Semantic pages, JSON-LD for every article, and a build script short
+          enough to read on the train.
+        </p>
+      </header>
+
+      <div class="case-study-body">
+        <div class="case-study-content">
+
+          <figure data-sync>
+            <svg class="fig-placeholder" viewBox="0 0 800 600" role="img" aria-label="Homepage at launch" xmlns="http://www.w3.org/2000/svg">
+              <rect width="800" height="600" fill="#eaffb4"/>
+              <rect x="60" y="60" width="680" height="36" rx="4" fill="#17181a"/>
+              <rect x="60" y="120" width="460" height="28" rx="3" fill="#44484b"/>
+              <rect x="60" y="170" width="680" height="1" fill="#17181a" opacity="0.2"/>
+              <rect x="60" y="200" width="320" height="240" rx="6" fill="#d2fb3e"/>
+              <rect x="420" y="200" width="320" height="80" rx="4" fill="#17181a"/>
+              <rect x="420" y="300" width="280" height="16" rx="2" fill="#44484b"/>
+              <rect x="420" y="330" width="320" height="12" rx="2" fill="#7e8488"/>
+              <rect x="420" y="352" width="260" height="12" rx="2" fill="#7e8488"/>
+              <text x="60" y="540" font-family="Inter, sans-serif" font-size="18" fill="#44484b">Figure 1 &mdash; homepage composition</text>
+            </svg>
+            <figcaption>Figure 1 — homepage at launch, composed from six fragments.</figcaption>
+          </figure>
+
+          <p>
+            North Press is a quarterly journal that has been in print since
+            1984. When they asked us to rebuild their online archive, the
+            brief was short: every back issue should be legible on any device
+            without JavaScript, and every poem should have a URL you can cite
+            in another century.
+          </p>
+
+          <p>
+            We composed the site from small light-DOM fragments — a header,
+            a card, a poem block, a footer — and inlined them at build time.
+            The browser sees one continuous document. A crawler sees one
+            continuous document. Only the editor sees fragments.
+          </p>
+
+          <h2>The editorial pipeline</h2>
+
+          <figure data-sync>
+            <svg class="fig-placeholder" viewBox="0 0 800 600" role="img" aria-label="Editorial pipeline diagram" xmlns="http://www.w3.org/2000/svg">
+              <rect width="800" height="600" fill="#f2f4f4"/>
+              <g font-family="Inter, sans-serif" font-size="20" fill="#17181a">
+                <rect x="60"  y="240" width="140" height="120" rx="10" fill="#ffffff" stroke="#17181a" stroke-width="2"/>
+                <text x="130" y="306" text-anchor="middle">Markdown</text>
+                <rect x="270" y="240" width="140" height="120" rx="10" fill="#ffffff" stroke="#17181a" stroke-width="2"/>
+                <text x="340" y="306" text-anchor="middle">Fragments</text>
+                <rect x="480" y="240" width="140" height="120" rx="10" fill="#d2fb3e" stroke="#17181a" stroke-width="2"/>
+                <text x="550" y="306" text-anchor="middle">HTML + LD</text>
+                <rect x="660" y="240" width="80"  height="120" rx="10" fill="#ffffff" stroke="#17181a" stroke-width="2"/>
+                <text x="700" y="306" text-anchor="middle">CDN</text>
+              </g>
+              <g stroke="#17181a" stroke-width="2" fill="none" marker-end="url(#arrow)">
+                <line x1="200" y1="300" x2="268" y2="300"/>
+                <line x1="410" y1="300" x2="478" y2="300"/>
+                <line x1="620" y1="300" x2="658" y2="300"/>
+              </g>
+              <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                  <path d="M0,0 L10,5 L0,10 z" fill="#17181a"/>
+                </marker>
+              </defs>
+            </svg>
+            <figcaption>Figure 2 — content flows left to right; no step takes longer than a second on a cold run.</figcaption>
+          </figure>
+
+          <p>
+            Writers submit in Markdown with a short YAML preamble. A build
+            script walks the content tree, inlines the fragments, generates
+            a JSON-LD block from the same front-matter that produced the
+            page, and writes one HTML file per route. The whole build is 187
+            lines of JavaScript and finishes in about 400ms.
+          </p>
+
+          <p>
+            Nothing is assembled in the browser. The site is ten HTML files
+            and a stylesheet when you view-source, which is also roughly how
+            the editors think about it.
+          </p>
+
+          <h2>JSON-LD as a first draft</h2>
+
+          <figure data-sync>
+            <svg class="fig-placeholder" viewBox="0 0 800 600" role="img" aria-label="JSON-LD side by side with article" xmlns="http://www.w3.org/2000/svg">
+              <rect width="800" height="600" fill="#0f1012"/>
+              <rect x="40"  y="80" width="340" height="440" rx="10" fill="#17191c" stroke="#272a2e"/>
+              <rect x="420" y="80" width="340" height="440" rx="10" fill="#f1f3f4"/>
+              <g font-family="ui-monospace, monospace" font-size="14" fill="#d4fd3e">
+                <text x="60" y="120">{ "@type": "Article",</text>
+                <text x="60" y="146">  "headline": "On rooms",</text>
+                <text x="60" y="172">  "author": {…},</text>
+                <text x="60" y="198">  "datePublished": "2026-01-12",</text>
+                <text x="60" y="224">  "about": ["architecture"] }</text>
+              </g>
+              <g font-family="Inter, sans-serif" fill="#17181a">
+                <text x="440" y="126" font-size="22" font-weight="600">On rooms</text>
+                <text x="440" y="158" font-size="14" fill="#7e8488">Jan 12, 2026 · 4 min read</text>
+                <rect x="440" y="180" width="300" height="8" rx="2" fill="#17181a" opacity="0.85"/>
+                <rect x="440" y="200" width="280" height="8" rx="2" fill="#17181a" opacity="0.7"/>
+                <rect x="440" y="220" width="290" height="8" rx="2" fill="#17181a" opacity="0.7"/>
+                <rect x="440" y="240" width="220" height="8" rx="2" fill="#17181a" opacity="0.7"/>
+              </g>
+              <text x="40" y="560" font-family="Inter, sans-serif" font-size="16" fill="#c1c5c8">Schema on the left; the page the reader sees on the right. Same source.</text>
+            </svg>
+            <figcaption>Figure 3 — the schema and the page are generated from one front-matter block.</figcaption>
+          </figure>
+
+          <p>
+            We ask editors to fill out the structured data before writing
+            the lede. Headline, author, section, publication date, and two
+            or three <code>about</code> keywords. That exercise clarifies
+            the piece more reliably than any brief, and it gives us a
+            machine-readable page before a single paragraph is written.
+          </p>
+
+          <h2>What we cut</h2>
+
+          <figure data-sync>
+            <svg class="fig-placeholder" viewBox="0 0 800 600" role="img" aria-label="Before and after bundle sizes" xmlns="http://www.w3.org/2000/svg">
+              <rect width="800" height="600" fill="#ffffff"/>
+              <g font-family="Inter, sans-serif" font-size="18" fill="#17181a">
+                <text x="60"  y="90">Before</text>
+                <text x="440" y="90">After</text>
+                <rect x="60"  y="120" width="320" height="60" fill="#17181a"/>
+                <rect x="60"  y="200" width="220" height="60" fill="#44484b"/>
+                <rect x="60"  y="280" width="280" height="60" fill="#7e8488"/>
+                <text x="60"  y="370" font-size="14" fill="#7e8488">JS · CSS · images &nbsp; 1.8 MB</text>
+                <rect x="440" y="120" width="60"  height="60" fill="#d2fb3e"/>
+                <rect x="440" y="200" width="40"  height="60" fill="#17181a"/>
+                <rect x="440" y="280" width="140" height="60" fill="#7e8488"/>
+                <text x="440" y="370" font-size="14" fill="#7e8488">JS · CSS · images &nbsp; 128 KB</text>
+              </g>
+              <text x="60" y="540" font-family="Inter, sans-serif" font-size="16" fill="#44484b">Fourteen times less weight on the wire, for a page that says more.</text>
+            </svg>
+            <figcaption>Figure 4 — median page weight dropped from 1.8 MB to 128 KB.</figcaption>
+          </figure>
+
+          <p>
+            The shadow DOM, for one. It is a lovely feature for application
+            UIs and a poor fit for content sites whose audience now includes
+            assistants that never open a shadow root. We also dropped the
+            client-side router, the lazy-hydration framework, and the
+            image-CDN SDK. What remained was an HTML file.
+          </p>
+
+          <p>
+            The footprint went from 1.8 MB of assets per page to 128 KB,
+            almost all of it an Inter subset and a poster image. First
+            contentful paint is the first byte off the wire.
+          </p>
+
+          <h2>Mobile, quietly</h2>
+
+          <figure data-sync>
+            <svg class="fig-placeholder" viewBox="0 0 800 600" role="img" aria-label="Mobile reading view" xmlns="http://www.w3.org/2000/svg">
+              <rect width="800" height="600" fill="#f2f4f4"/>
+              <rect x="300" y="60" width="200" height="480" rx="24" fill="#17181a"/>
+              <rect x="314" y="80" width="172" height="440" rx="14" fill="#ffffff"/>
+              <g font-family="Inter, sans-serif" fill="#17181a">
+                <rect x="328" y="104" width="56"  height="6" rx="2" fill="#d2fb3e"/>
+                <text x="328" y="140" font-size="14" font-weight="600">On rooms</text>
+                <rect x="328" y="160" width="144" height="4" rx="2" opacity="0.6"/>
+                <rect x="328" y="172" width="132" height="4" rx="2" opacity="0.6"/>
+                <rect x="328" y="184" width="140" height="4" rx="2" opacity="0.6"/>
+                <rect x="328" y="196" width="120" height="4" rx="2" opacity="0.6"/>
+                <rect x="328" y="224" width="144" height="90" rx="4" fill="#eaffb4"/>
+                <rect x="328" y="328" width="140" height="4" rx="2" opacity="0.6"/>
+                <rect x="328" y="340" width="130" height="4" rx="2" opacity="0.6"/>
+                <rect x="328" y="352" width="136" height="4" rx="2" opacity="0.6"/>
+              </g>
+              <text x="60" y="560" font-family="Inter, sans-serif" font-size="16" fill="#44484b">One column, one font, one stylesheet.</text>
+            </svg>
+            <figcaption>Figure 5 — the same document, on a phone, without a media-query-driven reshuffle.</figcaption>
+          </figure>
+
+          <p>
+            The layout is a single fluid column that breathes between 18 and
+            68 rem. There is no mobile template, no app shell, and no
+            second stylesheet to keep in sync. The phone gets the same
+            document the editor reads back to themselves at noon.
+          </p>
+
+          <p>
+            Two years in, the editorial team publishes four issues a year
+            without calling us. The build is still 187 lines. The pages are
+            still ten files.
+          </p>
+
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <!-- fragment: footer.html -->
+  <footer class="site-footer" data-fragment="footer">
+    <div class="footer-grid">
+      <div>
+        <p class="brand">
+          <span class="brand-mark" aria-hidden="true">◆</span>
+          <span class="brand-name">Atelier</span>
+        </p>
+        <p class="muted">Plain HTML, readable by humans and machines.</p>
+      </div>
+      <nav aria-label="Footer">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href="../work.html">Work</a></li>
+          <li><a href="../writing.html">Writing</a></li>
+          <li><a href="../index.html#about">About</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h2>Elsewhere</h2>
+        <ul>
+          <li><a href="https://github.com/" rel="me">GitHub</a></li>
+          <li><a href="mailto:hello@example.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy muted">&copy; 2026 Atelier. Crafted in light DOM.</p>
+  </footer>
+
+  <script src="../assets/enhance.js" defer></script>
+  <script src="../assets/scroll-sync.js" defer></script>
+</body>
+</html>
