@@ -2,7 +2,11 @@
 // Without this script, figures stay inline with the prose — the page is
 // still readable. With it, figures are lifted into a sticky left stage and
 // each one stays visible until the next anchor crosses a trigger line
-// roughly a third from the top of the viewport.
+// roughly a third from the top of the visible scroll area.
+//
+// The scroll area may be the window (standard layout) or the case-study
+// content column itself (fullscreen layout, where only the right side
+// scrolls). Both are handled here.
 
 (function () {
   const MIN_WIDTH = 60 * 16; // matches the 60rem breakpoint in styles.css
@@ -10,6 +14,29 @@
 
   const articles = Array.from(document.querySelectorAll('[data-scroll-sync]'));
   if (!articles.length) return;
+
+  // Walk up the ancestor chain until we find an element whose overflow-y
+  // actually scrolls. Fall back to window when none does.
+  const findScrollSource = (el) => {
+    let node = el;
+    while (node && node !== document.body && node !== document.documentElement) {
+      const style = getComputedStyle(node);
+      const oy = style.overflowY;
+      if ((oy === 'auto' || oy === 'scroll') && node.scrollHeight > node.clientHeight) {
+        return node;
+      }
+      node = node.parentElement;
+    }
+    return window;
+  };
+
+  const sourceRect = (source) => {
+    if (source === window) {
+      return { top: 0, height: window.innerHeight };
+    }
+    const r = source.getBoundingClientRect();
+    return { top: r.top, height: r.height };
+  };
 
   const hydrate = (article) => {
     if (article.dataset.hydrated === 'true') return;
@@ -22,8 +49,6 @@
     const figures = Array.from(content.querySelectorAll('figure[data-sync]'));
     if (figures.length < 2) return;
 
-    // Build the sticky stage and insert it into the body. Placed via
-    // grid-column in CSS so DOM order stays content-first for assistive tech.
     const stage = document.createElement('aside');
     stage.className = 'sync-stage';
     stage.setAttribute('aria-hidden', 'true');
@@ -39,9 +64,6 @@
       if (index === 0) clone.classList.add('is-active');
       frame.appendChild(clone);
 
-      // Leave an anchor behind where the figure used to live so scroll
-      // position keeps referencing the prose. The figure itself is hidden
-      // via CSS when the article is hydrated.
       const anchor = document.createElement('span');
       anchor.className = 'sync-anchor';
       anchor.setAttribute('aria-hidden', 'true');
@@ -54,6 +76,9 @@
 
     const anchors = Array.from(content.querySelectorAll('.sync-anchor'));
     const frames = Array.from(frame.querySelectorAll('figure'));
+    // Determine scroll source after the layout settles — the .case-study-content
+    // only becomes a scroll container once the fullscreen layout applies.
+    const scrollSource = findScrollSource(content);
 
     let activeIndex = 0;
     let ticking = false;
@@ -67,14 +92,12 @@
     };
 
     const recompute = () => {
-      const line = window.innerHeight * TRIGGER_RATIO;
-      // The active figure is the one whose anchor most recently crossed
-      // the trigger line going down. "Pinned until the next enters":
-      // once the next anchor's top is above the line, it takes over.
+      const { top, height } = sourceRect(scrollSource);
+      const line = top + height * TRIGGER_RATIO;
       let next = 0;
       for (let i = 0; i < anchors.length; i++) {
-        const top = anchors[i].getBoundingClientRect().top;
-        if (top <= line) next = i;
+        const anchorTop = anchors[i].getBoundingClientRect().top;
+        if (anchorTop <= line) next = i;
         else break;
       }
       setActive(next);
@@ -89,21 +112,28 @@
       });
     };
 
-    window.addEventListener('scroll', onScroll, { passive: true });
+    scrollSource.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
     recompute();
+
+    article._scrollSyncCleanup = () => {
+      scrollSource.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
   };
 
   const dehydrate = (article) => {
     if (article.dataset.hydrated !== 'true') return;
+    if (article._scrollSyncCleanup) {
+      article._scrollSyncCleanup();
+      article._scrollSyncCleanup = null;
+    }
     const stage = article.querySelector('.sync-stage');
     if (stage) stage.remove();
     article.querySelectorAll('.sync-anchor').forEach((a) => a.remove());
     delete article.dataset.hydrated;
   };
 
-  // Hydrate on load; react to viewport crossing the breakpoint so a narrow
-  // window falls back to plain inline figures without a reload.
   const mql = matchMedia('(min-width: ' + (MIN_WIDTH / 16) + 'rem)');
   const onBreakpoint = () => {
     articles.forEach((article) => {
