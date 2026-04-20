@@ -968,66 +968,6 @@ section {
   height: 0;
 }
 
-/* Fullscreen variant: body.page-case-study pins the header to the top, the
-   text column owns the vertical scroll, and the sticky image panel fills the
-   remaining viewport on its own. Scoped above the scroll-sync breakpoint so
-   narrow viewports still scroll the whole document normally. */
-
-@media (min-width: 60rem) {
-  body.page-case-study {
-    height: 100vh;
-    overflow: hidden;
-    display: grid;
-    grid-template-rows: auto 1fr;
-  }
-
-  body.page-case-study > main {
-    min-height: 0;
-    overflow: hidden;
-  }
-
-  body.page-case-study .case-study {
-    height: 100%;
-    padding-top: 0;
-    padding-bottom: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  body.page-case-study .case-study-head {
-    flex: 0 0 auto;
-    padding-top: clamp(1.5rem, 3vw, 2.5rem);
-    margin-bottom: clamp(1rem, 2vw, 1.5rem);
-  }
-
-  body.page-case-study .case-study-body {
-    flex: 1;
-    min-height: 0;
-    padding-bottom: clamp(1rem, 3vw, 2rem);
-  }
-
-  body.page-case-study .case-study-content {
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding-right: clamp(0.5rem, 1.5vw, 1.25rem);
-    scrollbar-gutter: stable;
-  }
-
-  body.page-case-study .case-study-content::before,
-  body.page-case-study .case-study-content::after {
-    content: "";
-    display: block;
-    height: clamp(2rem, 6vh, 4rem);
-  }
-
-  body.page-case-study [data-scroll-sync][data-hydrated] .sync-stage {
-    position: relative;
-    top: 0;
-    height: 100%;
-    min-height: 0;
-  }
-}
-
 @media (min-width: 60rem) {
   .case-study-body {
     grid-template-columns: 3fr 2fr;
