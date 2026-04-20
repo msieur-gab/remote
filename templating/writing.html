@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Writing — Atelier</title>
+  <meta name="description" content="Essays and notes from Atelier on semantic HTML, progressive enhancement, and writing for machines as well as humans." />
+  <link rel="canonical" href="https://example.com/writing.html" />
+  <script>
+    (function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <link rel="preconnect" href="https://rsms.me" crossorigin>
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="./assets/styles.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Writing — Atelier",
+    "description": "Essays and notes from Atelier on semantic HTML, progressive enhancement, and writing for machines as well as humans.",
+    "url": "https://example.com/writing.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Atelier",
+      "url": "https://example.com/"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- fragment: header-mega.html -->
+  <header class="site-header site-header-mega" data-fragment="header-mega">
+    <a class="brand" href="./index.html">
+      <span class="brand-mark" aria-hidden="true">◆</span>
+      <span class="brand-name">Atelier</span>
+    </a>
+
+    <nav id="site-nav" class="site-nav" aria-label="Primary">
+      <ul>
+        <li class="nav-group">
+          <details class="dropdown" data-dropdown>
+            <summary>
+              Work
+              <span class="dropdown-chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="dropdown-panel" role="group" aria-label="Recent work">
+              <ul class="dropdown-list">
+                <li><a href="/work/north-press.html">North Press</a></li>
+                <li><a href="/work/halyard.html">Halyard</a></li>
+                <li><a href="/work/meridian.html">Meridian</a></li>
+                <li><a href="/work/axon.html">Axon</a></li>
+                <li><a href="/work/ember.html">Ember</a></li>
+                <li role="separator" class="dropdown-sep"></li>
+                <li><a href="./work.html" class="dropdown-all">All projects &rarr;</a></li>
+              </ul>
+            </div>
+          </details>
+        </li>
+
+        <li class="nav-group">
+          <details class="dropdown" data-dropdown open>
+            <summary>
+              Writing
+              <span class="dropdown-chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="dropdown-panel" role="group" aria-label="Recent writing">
+              <ul class="dropdown-list">
+                <li><a href="./article.html">Readable by machines, lovable by humans</a></li>
+                <li><a href="/writing/light-dom-fragments.html">Why we left the shadow DOM</a></li>
+                <li><a href="/writing/build-step-in-an-afternoon.html">A build step you can read in an afternoon</a></li>
+                <li><a href="/writing/anchors-not-routers.html">Anchors, not routers</a></li>
+                <li><a href="/writing/schema-first-drafts.html">Writing the schema before the prose</a></li>
+                <li role="separator" class="dropdown-sep"></li>
+                <li><a href="./writing.html" class="dropdown-all" aria-current="page">Full archive &rarr;</a></li>
+              </ul>
+            </div>
+          </details>
+        </li>
+
+        <li><a href="./index.html#about">About</a></li>
+        <li><a href="./index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-tools">
+      <button
+        class="theme-toggle"
+        type="button"
+        aria-label="Toggle color theme"
+        aria-pressed="false"
+        data-toggle="theme"
+      >
+        <svg class="theme-icon theme-icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+          <circle cx="10" cy="10" r="3.25"/>
+          <path d="M10 2.5v1.5M10 16v1.5M4.25 4.25l1.06 1.06M14.69 14.69l1.06 1.06M2.5 10h1.5M16 10h1.5M4.25 15.75l1.06-1.06M14.69 5.31l1.06-1.06"/>
+        </svg>
+        <svg class="theme-icon theme-icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M17 11.5A7.5 7.5 0 1 1 8.5 3 5.5 5.5 0 0 0 17 11.5z"/>
+        </svg>
+      </button>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        data-toggle="nav"
+      >
+        <span class="sr-only">Menu</span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="page-intro" aria-labelledby="writing-title">
+      <p class="eyebrow">Archive</p>
+      <h1 id="writing-title">Writing</h1>
+      <p class="lede">
+        Short essays and field notes on building content-first websites —
+        semantic markup, progressive enhancement, and the small build tools
+        that hold it all together.
+      </p>
+      <p class="page-intro-aside muted">
+        <a href="/writing/feed.xml">RSS</a>
+        <span aria-hidden="true">·</span>
+        <a href="mailto:hello@example.com?subject=Atelier%20journal">Email list</a>
+      </p>
+    </section>
+
+    <section class="section" aria-label="Latest essay">
+      <article class="feature-card">
+        <div class="feature-card-meta">
+          <p class="eyebrow">Latest · March 18, 2026</p>
+          <span class="card-tag">Essay</span>
+        </div>
+        <h2 class="feature-card-title">
+          <a href="./article.html">Readable by machines, lovable by humans</a>
+        </h2>
+        <p class="feature-card-excerpt">
+          Three years ago the question was whether search engines could read
+          your JavaScript. Today it is whether a language model can quote your
+          page back without hallucinating a paragraph you did not write. The
+          answer is the same: put the words in the HTML.
+        </p>
+        <p class="feature-card-cta">
+          <a class="button button-primary" href="./article.html">Continue reading</a>
+          <span class="muted feature-card-time">6 min read</span>
+        </p>
+      </article>
+    </section>
+
+    <section class="section" id="archive" aria-labelledby="archive-title">
+      <header class="section-head">
+        <h2 id="archive-title">Full archive</h2>
+        <p class="section-count muted"><span data-count>14</span> pieces</p>
+      </header>
+
+      <nav class="chip-row" aria-label="Filter writing" data-filter-group="writing">
+        <button type="button" class="chip" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="chip" data-filter="essay" aria-pressed="false">Essays</button>
+        <button type="button" class="chip" data-filter="notes" aria-pressed="false">Notes</button>
+        <button type="button" class="chip" data-filter="talk" aria-pressed="false">Talks</button>
+      </nav>
+
+      <div class="archive-list" data-filter-target="writing">
+
+        <section class="archive-year" aria-labelledby="year-2026">
+          <h3 id="year-2026" class="archive-year-title">2026</h3>
+
+          <ol class="archive-entries">
+            <li class="archive-entry" data-tags="essay">
+              <p class="archive-entry-meta">
+                <time datetime="2026-03-18">Mar 18</time>
+                <span class="card-tag">Essay</span>
+              </p>
+              <h4 class="archive-entry-title">
+                <a href="./article.html">Readable by machines, lovable by humans</a>
+              </h4>
+              <p class="archive-entry-excerpt">
+                Semantic HTML, generous typography, and a narrow JavaScript
+                layer can coexist with strong generative-engine optimization.
+              </p>
+            </li>
+
+            <li class="archive-entry" data-tags="notes">
+              <p class="archive-entry-meta">
+                <time datetime="2026-01-22">Jan 22</time>
+                <span class="card-tag">Notes</span>
+              </p>
+              <h4 class="archive-entry-title">
+                <a href="/writing/light-dom-fragments.html">Why we left the shadow DOM</a>
+              </h4>
+              <p class="archive-entry-excerpt">
+                Encapsulation is useful, but not when the audience includes an
+                LLM that never opens a shadow root.
+              </p>
+            </li>
+          </ol>
+        </section>
+
+        <section class="archive-year" aria-labelledby="year-2025">
+          <h3 id="year-2025" class="archive-year-title">2025</h3>
+
+          <ol class="archive-entries">
+            <li class="archive-entry" data-tags="essay">
+              <p class="archive-entry-meta">
+                <time datetime="2025-10-04">Oct 4</time>
+                <span class="card-tag">Essay</span>
+              </p>
+              <h4 class="archive-entry-title">
+                <a href="/writing/build-step-in-an-afternoon.html">A build step you can read in an afternoon</a>
+              </h4>
+              <p class="archive-entry-excerpt">
+                Two hundred lines of JavaScript that inlines fragments, writes
+                sitemaps, and stays out of the way.
+              </p>
+            </li>
+
+            <li class="archive-entry" data-tags="notes">
+              <p class="archive-entry-meta">
+                <time datetime="2025-07-11">Jul 11</time>
+                <span class="card-tag">Notes</span>
+              </p>
+              <h4 class="archive-entry-title">
+                <a href="/writing/anchors-not-routers.html">Anchors, not routers</a>
+              </h4>
+              <p class="archive-entry-excerpt">
+                Why <code>#section</code> still wins for content sites, and
+                what we stopped doing with client-side routing.
+              </p>
+            </li>
+
+            <li class="archive-entry" data-tags="talk">
+              <p class="archive-entry-meta">
+                <time datetime="2025-05-30">May 30</time>
+                <span class="card-tag">Talk</span>
+              </p>
+              <h4 class="archive-entry-title">
+                <a href="/writing/local-first-docs-talk.html">Local-first documentation (State of the Browser)</a>
+              </h4>
+              <p class="archive-entry-excerpt">
+                Twenty minutes on offline-capable reference sites, with the
+                slides rendered as a single HTML page.
+              </p>
+            </li>
+
+            <li class="archive-entry" data-tags="essay">
+              <p class="archive-entry-meta">
+                <time datetime="2025-03-02">Mar 2</time>
+                <span class="card-tag">Essay</span>
+              </p>
+              <h4 class="archive-entry-title">
+                <a href="/writing/schema-first-drafts.html">Writing the schema before the prose</a>
+              </h4>
+              <p class="archive-entry-excerpt">
+                How a fifteen-minute JSON-LD sketch changes what you decide to
+                put on the page — and what you cut.
+              </p>
+            </li>
+          </ol>
+        </section>
+
+        <section class="archive-year" aria-labelledby="year-2024">
+          <h3 id="year-2024" class="archive-year-title">2024</h3>
+
+          <ol class="archive-entries">
+            <li class="archive-entry" data-tags="notes">
+              <p class="archive-entry-meta">
+                <time datetime="2024-11-18">Nov 18</time>
+                <span class="card-tag">Notes</span>
+              </p>
+              <h4 class="archive-entry-title">
+                <a href="/writing/print-stylesheets-are-back.html">Print stylesheets are quietly back</a>
+              </h4>
+              <p class="archive-entry-excerpt">
+                Save-as-PDF has become a primary distribution format. What we
+                learned re-styling a decade of docs for paper.
+              </p>
+            </li>
+
+            <li class="archive-entry" data-tags="essay">
+              <p class="archive-entry-meta">
+                <time datetime="2024-08-07">Aug 7</time>
+                <span class="card-tag">Essay</span>
+              </p>
+              <h4 class="archive-entry-title">
+                <a href="/writing/typography-as-ia.html">Typography is information architecture</a>
+              </h4>
+              <p class="archive-entry-excerpt">
+                Line length, scale, and rhythm do more for a reader than most
+                component libraries ever will.
+              </p>
+            </li>
+
+            <li class="archive-entry" data-tags="notes">
+              <p class="archive-entry-meta">
+                <time datetime="2024-04-14">Apr 14</time>
+                <span class="card-tag">Notes</span>
+              </p>
+              <h4 class="archive-entry-title">
+                <a href="/writing/css-that-survives.html">CSS that survives a redesign</a>
+              </h4>
+              <p class="archive-entry-excerpt">
+                A short list of utility classes we have kept for five years,
+                and the ones we deleted every time.
+              </p>
+            </li>
+          </ol>
+        </section>
+
+      </div>
+
+      <p class="empty-state muted" data-filter-empty hidden>
+        Nothing in this category yet. Try <button type="button" class="linklike" data-filter-reset>All</button>.
+      </p>
+    </section>
+
+  </main>
+
+  <!-- fragment: footer.html -->
+  <footer class="site-footer" data-fragment="footer">
+    <div class="footer-grid">
+      <div>
+        <p class="brand">
+          <span class="brand-mark" aria-hidden="true">◆</span>
+          <span class="brand-name">Atelier</span>
+        </p>
+        <p class="muted">Plain HTML, readable by humans and machines.</p>
+      </div>
+      <nav aria-label="Footer">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href="./work.html">Work</a></li>
+          <li><a href="./writing.html" aria-current="page">Writing</a></li>
+          <li><a href="./index.html#about">About</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h2>Elsewhere</h2>
+        <ul>
+          <li><a href="https://github.com/" rel="me">GitHub</a></li>
+          <li><a href="mailto:hello@example.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy muted">&copy; 2026 Atelier. Crafted in light DOM.</p>
+  </footer>
+
+  <script src="./assets/enhance.js" defer></script>
+</body>
+</html>

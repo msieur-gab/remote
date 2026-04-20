@@ -66,6 +66,52 @@
     });
   }
 
+  // Archive chip filters. Each .chip-row has a data-filter-group name; the
+  // matching [data-filter-target] holds items with data-tags="a b c". Chips
+  // are plain <button>s, so without JS every item stays visible.
+  const chipRows = Array.from(document.querySelectorAll('[data-filter-group]'));
+  chipRows.forEach((row) => {
+    const group = row.getAttribute('data-filter-group');
+    const target = document.querySelector('[data-filter-target="' + group + '"]');
+    if (!target) return;
+    const items = Array.from(target.querySelectorAll('[data-tags]'));
+    const empty = document.querySelector('[data-filter-empty]');
+    const chips = Array.from(row.querySelectorAll('.chip'));
+    const resetBtn = document.querySelector('[data-filter-reset]');
+
+    const apply = (filter) => {
+      chips.forEach((c) => {
+        c.setAttribute('aria-pressed', String(c.getAttribute('data-filter') === filter));
+      });
+      let visible = 0;
+      items.forEach((item) => {
+        const tags = (item.getAttribute('data-tags') || '').split(/\s+/);
+        const match = filter === 'all' || tags.includes(filter);
+        if (match) {
+          item.removeAttribute('data-filter-hidden');
+          visible++;
+        } else {
+          item.setAttribute('data-filter-hidden', '');
+        }
+      });
+      // Hide year groups that end up empty, to avoid lonely headers.
+      target.querySelectorAll('.archive-year').forEach((year) => {
+        const any = year.querySelector('.archive-entry:not([data-filter-hidden])');
+        if (any) year.removeAttribute('data-filter-hidden');
+        else year.setAttribute('data-filter-hidden', '');
+      });
+      if (empty) {
+        if (visible === 0) empty.removeAttribute('hidden');
+        else empty.setAttribute('hidden', '');
+      }
+    };
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => apply(chip.getAttribute('data-filter')));
+    });
+    if (resetBtn) resetBtn.addEventListener('click', () => apply('all'));
+  });
+
   // Highlight the current in-view section in the nav.
   const navLinks = Array.from(document.querySelectorAll('.site-nav a[href*="#"]'));
   const byId = new Map();
