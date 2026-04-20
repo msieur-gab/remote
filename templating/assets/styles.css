@@ -973,15 +973,23 @@ section {
 }
 
 @media (min-width: 60rem) {
-  .case-study-body {
+  /* Without JS, [data-hydrated] is never set — the article stays a single,
+     comfortably-sized column with inline figures. Only when scroll-sync.js
+     has built the left stage do we split the grid into 3fr / 2fr. */
+  .case-study-content {
+    margin-inline: auto;
+  }
+
+  [data-scroll-sync][data-hydrated] .case-study-body {
     grid-template-columns: 3fr 2fr;
     align-items: start;
   }
 
-  .case-study-content {
+  [data-scroll-sync][data-hydrated] .case-study-content {
     grid-column: 2;
     grid-row: 1;
     max-width: none;
+    margin-inline: 0;
   }
 
   [data-scroll-sync][data-hydrated] .sync-stage {
