@@ -843,8 +843,16 @@ section {
     justify-self: center;
   }
 
+  /* Keep inline figures in flow (so getBoundingClientRect.top is meaningful
+     for scroll-sync) but make them invisible and collapse their box. */
   body.case-study-page.sync-active .case-study-prose figure[data-media] {
-    display: none;
+    visibility: hidden;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    pointer-events: none;
   }
 
   body.case-study-page.sync-active .case-study-media {
