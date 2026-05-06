@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>North Press — editorial platform · Atelier</title>
+  <meta name="description" content="A 110-year-old editorial cooperative replaced their single-page web application with a 300-line build script. A case study in plain HTML." />
+  <link rel="canonical" href="https://example.com/work/north-press.html" />
+  <script>
+    (function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <link rel="preconnect" href="https://rsms.me" crossorigin>
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="../assets/styles.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "North Press — editorial platform",
+    "description": "A 110-year-old editorial cooperative replaced their single-page web application with a 300-line build script.",
+    "articleSection": "Case study",
+    "datePublished": "2026-02-15",
+    "dateModified": "2026-02-15",
+    "author": { "@type": "Organization", "name": "Atelier", "url": "https://example.com/" },
+    "publisher": { "@type": "Organization", "name": "Atelier", "url": "https://example.com/" },
+    "about": {
+      "@type": "CreativeWork",
+      "name": "North Press editorial platform",
+      "creator": { "@type": "Organization", "name": "North Press Cooperative" }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://example.com/work/north-press.html"
+    }
+  }
+  </script>
+</head>
+<body class="case-study-page">
+
+  <!-- fragment: header.html (inlined) -->
+  <header class="site-header" data-fragment="header">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark" aria-hidden="true">◆</span>
+      <span class="brand-name">Atelier</span>
+    </a>
+
+    <nav id="site-nav" class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../index.html#work">Work</a></li>
+        <li><a href="../index.html#writing">Writing</a></li>
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-tools">
+      <button
+        class="theme-toggle"
+        type="button"
+        aria-label="Toggle color theme"
+        aria-pressed="false"
+        data-toggle="theme"
+      >
+        <svg class="theme-icon theme-icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+          <circle cx="10" cy="10" r="3.25"/>
+          <path d="M10 2.5v1.5M10 16v1.5M4.25 4.25l1.06 1.06M14.69 14.69l1.06 1.06M2.5 10h1.5M16 10h1.5M4.25 15.75l1.06-1.06M14.69 5.31l1.06-1.06"/>
+        </svg>
+        <svg class="theme-icon theme-icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M17 11.5A7.5 7.5 0 1 1 8.5 3 5.5 5.5 0 0 0 17 11.5z"/>
+        </svg>
+      </button>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        data-toggle="nav"
+      >
+        <span class="sr-only">Menu</span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <div
+      class="case-study"
+      data-scroll-sync
+      data-media-position="left"
+      data-split="3:4"
+      data-zone-down="0.30"
+      data-zone-up="0.45"
+      data-sticky-headers=".site-header"
+    >
+      <article class="case-study-prose">
+        <header class="case-study-header">
+          <p class="eyebrow">Case study · Editorial platform</p>
+          <h1>North Press</h1>
+          <p class="lede">
+            A 110-year-old editorial cooperative replaced their single-page web
+            application with a 300-line build script.
+          </p>
+          <dl class="case-meta">
+            <div><dt>Client</dt><dd>North Press Cooperative</dd></div>
+            <div><dt>Year</dt><dd>2026</dd></div>
+            <div><dt>Role</dt><dd>Design &amp; engineering</dd></div>
+            <div><dt>Stack</dt><dd>Static HTML · Python · vanilla JS</dd></div>
+          </dl>
+        </header>
+
+        <section>
+          <h2>Brief</h2>
+          <p>
+            North Press publishes a weekly long-form journal that has been in
+            continuous print since 1916. Their previous site was a single-page
+            React application that took twelve seconds to load on a slow
+            connection and routinely confused readers in feed readers and
+            search engines.
+          </p>
+          <p>
+            The brief was simple: keep the editorial workflow intact, but make
+            every page legible to a browser, a feed reader, an LLM, and a
+            print archivist &mdash; with one source of truth.
+          </p>
+          <figure data-media>
+            <svg viewBox="0 0 320 220" role="img" aria-label="The old client-rendered site mockup">
+              <rect x="20" y="20" width="280" height="180" rx="8" fill="var(--surface)" stroke="currentColor" stroke-opacity="0.18"/>
+              <rect x="40" y="40" width="100" height="8" rx="2" fill="currentColor" opacity="0.85"/>
+              <rect x="40" y="56" width="200" height="6" rx="2" fill="currentColor" opacity="0.3"/>
+              <rect x="40" y="68" width="160" height="6" rx="2" fill="currentColor" opacity="0.3"/>
+              <rect x="40" y="92" width="240" height="64" rx="4" fill="var(--accent-soft)"/>
+              <rect x="40" y="168" width="60" height="6" rx="2" fill="currentColor" opacity="0.3"/>
+              <rect x="108" y="168" width="60" height="6" rx="2" fill="currentColor" opacity="0.3"/>
+              <rect x="176" y="168" width="60" height="6" rx="2" fill="currentColor" opacity="0.3"/>
+            </svg>
+            <figcaption>The original site, rendered entirely on the client.</figcaption>
+          </figure>
+        </section>
+
+        <section>
+          <h2>Approach</h2>
+          <p>
+            We replaced the SPA with a build script of about three hundred
+            lines. Each article is a markdown file in the editorial
+            repository, with a front-matter block describing the publication
+            context.
+          </p>
+          <p>
+            The script reads the file, parses the prose, runs each figure
+            through its renderer &mdash; charts compile to inline SVG, videos
+            copy through &mdash; and emits a single static HTML page with a
+            JSON-LD block in the head.
+          </p>
+          <figure data-media>
+            <svg viewBox="0 0 360 160" role="img" aria-label="Build pipeline: markdown to build to static">
+              <rect x="20" y="50" width="90" height="60" rx="8" fill="var(--surface)" stroke="currentColor" stroke-opacity="0.2"/>
+              <text x="65" y="78" text-anchor="middle" font-size="12" fill="currentColor" font-family="inherit">Markdown</text>
+              <text x="65" y="94" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6" font-family="inherit">.md + assets</text>
+              <line x1="115" y1="80" x2="138" y2="80" stroke="currentColor" stroke-width="2" stroke-opacity="0.4"/>
+              <polygon points="138,76 146,80 138,84" fill="currentColor" opacity="0.4"/>
+              <rect x="146" y="50" width="90" height="60" rx="8" fill="var(--accent)"/>
+              <text x="191" y="78" text-anchor="middle" font-size="12" fill="var(--accent-ink)" font-family="inherit" font-weight="600">Build</text>
+              <text x="191" y="94" text-anchor="middle" font-size="10" fill="var(--accent-ink)" opacity="0.7" font-family="inherit">~300 lines</text>
+              <line x1="241" y1="80" x2="264" y2="80" stroke="currentColor" stroke-width="2" stroke-opacity="0.4"/>
+              <polygon points="264,76 272,80 264,84" fill="currentColor" opacity="0.4"/>
+              <rect x="272" y="50" width="80" height="60" rx="8" fill="var(--surface)" stroke="currentColor" stroke-opacity="0.2"/>
+              <text x="312" y="78" text-anchor="middle" font-size="12" fill="currentColor" font-family="inherit">Static</text>
+              <text x="312" y="94" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.6" font-family="inherit">.html + JSON-LD</text>
+            </svg>
+            <figcaption>One markdown file becomes one static page in one pass.</figcaption>
+          </figure>
+        </section>
+
+        <section>
+          <h2>Build</h2>
+          <p>
+            The build step has no plugin system, no lifecycle, no hydration
+            story. It is a single function that returns a string. Replacing
+            it would be a half-day's work. The team can read it in an
+            afternoon.
+          </p>
+          <figure data-media data-type="code" data-lang="python">
+<pre><code>def build(src):
+    md = Path(src).read_text()
+    fm, content = split_frontmatter(md)
+    html = render(content)
+    template = TEMPLATES[fm["type"]]
+    return template.format(meta=fm, body=html)</code></pre>
+            <figcaption>The whole build step: read, split, render, template.</figcaption>
+          </figure>
+        </section>
+
+        <section>
+          <h2>Outcome</h2>
+          <p>
+            On a slow 3G profile, time-to-first-byte fell from 1100ms to 90ms.
+            More usefully, the custom React admin that the team had been
+            maintaining alongside the SPA was retired. Editors now write in a
+            folder of markdown files, on the same workflow they use for the
+            print edition.
+          </p>
+          <figure data-media>
+            <svg viewBox="0 0 320 200" role="img" aria-label="Time-to-first-byte: 1100ms before, 90ms after">
+              <text x="20" y="28" font-size="11" fill="currentColor" opacity="0.6" font-family="inherit">TTFB (ms, 3G)</text>
+              <line x1="20" y1="170" x2="300" y2="170" stroke="currentColor" stroke-opacity="0.2"/>
+              <rect x="70" y="40" width="70" height="130" fill="currentColor" opacity="0.22"/>
+              <text x="105" y="34" text-anchor="middle" font-size="14" fill="currentColor" font-family="inherit" font-weight="600">1100</text>
+              <text x="105" y="190" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.7" font-family="inherit">Before</text>
+              <rect x="180" y="158" width="70" height="12" fill="var(--accent)"/>
+              <text x="215" y="153" text-anchor="middle" font-size="14" fill="currentColor" font-family="inherit" font-weight="600">90</text>
+              <text x="215" y="190" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.7" font-family="inherit">After</text>
+            </svg>
+            <figcaption>Time-to-first-byte measured on a throttled 3G profile.</figcaption>
+          </figure>
+        </section>
+
+        <section>
+          <h2>Reflection</h2>
+          <p>
+            What surprised us most was how cleanly the new pipeline mapped
+            onto the team's existing print discipline. The website stopped
+            being a separate kind of object &mdash; it became another output
+            of the editorial process, like the print edition or the audio
+            podcast.
+          </p>
+          <figure data-media data-type="quote">
+            <blockquote>
+              The team stopped thinking about &ldquo;the website&rdquo; as a
+              separate object. It became another output of the editorial
+              process &mdash; like the print edition.
+              <cite>&mdash; Anya Reed, Editor-in-Chief</cite>
+            </blockquote>
+          </figure>
+        </section>
+
+        <footer class="case-study-footer">
+          <p><a href="../index.html#work">&larr; All projects</a></p>
+        </footer>
+      </article>
+
+      <aside class="case-study-media" aria-hidden="true">
+        <div class="case-study-media-frame">
+          <figure></figure>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script src="../assets/enhance.js" defer></script>
+  <script type="module">
+    import { initScrollSync } from '../assets/scroll-sync.js';
+    const container = document.querySelector('[data-scroll-sync]');
+    const panel = container && container.querySelector('.case-study-media');
+    if (container && panel) initScrollSync(container, panel);
+  </script>
+</body>
+</html>
