@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Eyescroll Test Bench</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column on the left, an instrument panel docked right on desktop and as a bottom sheet on phones. */
+:root {
+  --bg: #f2f4f6;
+  --surface: #ffffff;
+  --ink: #16202a;
+  --muted: #5a6572;
+  --line: #d5dce3;
+  --accent: #1f5fbf;
+  --go: #1d8456;
+  --wait: #a86c12;
+  --stop: #b23b35;
+  --band: rgba(31, 95, 191, 0.10);
+  --shadow: 0 10px 30px rgba(22, 32, 42, 0.12);
+  --f-read: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --f-ui: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-num: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --panel-w: 330px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1318; --surface: #161d25; --ink: #e5eaef; --muted: #93a0ad; --line: #2a3440;
+    --accent: #74a6ff; --go: #3fc48b; --wait: #e2a748; --stop: #ef6c63;
+    --band: rgba(116, 166, 255, 0.14); --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1318; --surface: #161d25; --ink: #e5eaef; --muted: #93a0ad; --line: #2a3440;
+  --accent: #74a6ff; --go: #3fc48b; --wait: #e2a748; --stop: #ef6c63;
+  --band: rgba(116, 166, 255, 0.14); --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-read);
+  font-size: 1.15rem;
+  line-height: 1.62;
+  padding-inline: 16px;
+  padding-block: calc(env(safe-area-inset-top, 0px) + 40px) 220px;
+}
+@media (min-width: 960px) {
+  body { padding-right: calc(var(--panel-w) + 48px); padding-bottom: 80px; }
+}
+
+/* ---------- Article ---------- */
+article { max-width: 64ch; margin-inline: auto; }
+.kicker {
+  font-family: var(--f-ui); font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);
+  margin: 0 0 0.6rem;
+}
+h1 {
+  font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1.05; font-weight: 400;
+  letter-spacing: -0.01em; margin: 0 0 1rem; text-wrap: balance;
+}
+h1 em { font-style: italic; color: var(--accent); }
+h2 {
+  font-size: 1.6rem; line-height: 1.2; font-weight: 600; margin: 2.6rem 0 0.6rem;
+  text-wrap: balance;
+}
+.lede { font-size: 1.3rem; color: var(--muted); margin: 0 0 1.6rem; }
+p { margin: 0 0 1.05rem; }
+.figure-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px; margin: 1.4rem 0 1.6rem;
+  font-family: var(--f-ui);
+}
+.figure-row div { border-top: 2px solid var(--ink); padding-top: 8px; min-width: 0; }
+.figure-row b { display: block; font-family: var(--f-num); font-weight: 500; font-size: 1.25rem; font-variant-numeric: tabular-nums; }
+.figure-row span { font-size: 0.85rem; color: var(--muted); line-height: 1.35; display: block; }
+blockquote {
+  margin: 1.6rem 0; padding: 0 0 0 1rem; border-left: 2px solid var(--accent);
+  font-style: italic; color: var(--muted);
+}
+ul.tips { padding-left: 1.2rem; margin: 0 0 1.2rem; }
+ul.tips li { margin-bottom: 0.5rem; }
+code, kbd {
+  font-family: var(--f-num); font-size: 0.85em; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 4px; padding: 0 0.3em;
+}
+.end-mark {
+  margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line);
+  font-family: var(--f-ui); font-size: 0.9rem; color: var(--muted);
+}
+
+/* ---------- Panel ---------- */
+.panel {
+  position: fixed; z-index: 10; background: var(--surface); color: var(--ink);
+  border: 1px solid var(--line); box-shadow: var(--shadow);
+  font-family: var(--f-ui); font-size: 0.95rem; line-height: 1.35;
+  display: flex; flex-direction: column;
+}
+@media (min-width: 960px) {
+  .panel {
+    top: 16px; right: 16px; bottom: 16px; width: var(--panel-w);
+    border-radius: 10px; overflow: hidden;
+  }
+  .panel-body { overflow-y: auto; }
+  #tuneBtn { display: none; }
+}
+@media (max-width: 959.98px) {
+  .panel {
+    left: 0; right: 0; bottom: 0; border-radius: 14px 14px 0 0;
+    border-bottom: 0; max-height: 78vh;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .panel[data-expanded="false"] .panel-body { display: none; }
+  .panel-body { overflow-y: auto; }
+}
+.panel-top { padding: 12px 14px 10px; display: grid; gap: 10px; border-bottom: 1px solid var(--line); }
+.row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.row.spread { justify-content: space-between; }
+.brand { font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.78rem; color: var(--muted); }
+
+.status {
+  display: inline-flex; align-items: center; gap: 8px; position: relative; overflow: hidden;
+  padding: 5px 12px 5px 10px; border-radius: 999px; border: 1px solid var(--line);
+  font-weight: 500; font-size: 0.92rem; background: var(--bg); cursor: pointer; user-select: none;
+  min-width: 0;
+}
+.status .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); flex: none; }
+.status[data-state="idle"] .dot { background: var(--accent); }
+.status[data-state="arming"] .dot { background: var(--wait); }
+.status[data-state="scrolling"] .dot { background: var(--go); }
+.status[data-state="noface"] .dot, .status[data-state="error"] .dot { background: var(--stop); }
+.status[data-state="paused"] .dot { background: transparent; border: 2px solid var(--muted); width: 10px; height: 10px; }
+.status .fill {
+  position: absolute; left: 0; bottom: 0; height: 2px; width: 0; background: var(--wait);
+}
+.status[data-state="scrolling"] .fill { width: 100%; background: var(--go); }
+
+.btn {
+  font: inherit; font-weight: 500; font-size: 0.9rem; color: var(--ink);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 7px;
+  padding: 7px 12px; cursor: pointer; line-height: 1.1;
+}
+.btn:hover { border-color: var(--muted); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.btn:focus-visible, .status:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+
+/* Meters */
+.meters { display: grid; gap: 10px; }
+.meter { display: grid; gap: 4px; }
+.meter-label { display: flex; justify-content: space-between; gap: 8px; font-size: 0.85rem; color: var(--muted); }
+.meter-label strong { color: var(--ink); font-weight: 500; }
+.meter-label output { font-family: var(--f-num); font-size: 0.78rem; font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
+.track { position: relative; height: 14px; border-radius: 3px; background: var(--bg); border: 1px solid var(--line); overflow: hidden; }
+.track .band { position: absolute; top: 0; bottom: 0; background: var(--band); }
+.track .mid { position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: var(--line); }
+.track .marker {
+  position: absolute; top: 1px; bottom: 1px; width: 4px; margin-left: -2px; border-radius: 2px;
+  background: var(--ink); left: 50%;
+}
+.meter.big .track { height: 22px; }
+.meter.big .marker { width: 6px; margin-left: -3px; }
+.meter.big[data-dir="1"] .marker, .meter.big[data-dir="-1"] .marker { background: var(--go); }
+.ends { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+
+.panel-body { flex: 1 1 auto; min-height: 0; padding: 12px 14px 16px; display: flex; flex-direction: column; gap: 16px; }
+.panel-body > * { flex: none; }
+.cam { position: relative; width: 100%; border-radius: 8px; overflow: hidden; background: var(--bg); border: 1px solid var(--line); aspect-ratio: 4 / 3; max-width: 100%; }
+.cam video, .cam canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+.cam .cam-note {
+  position: absolute; inset: 0; display: grid; place-items: center; text-align: center;
+  padding: 16px; margin: 0; font-size: 0.88rem; color: var(--muted);
+}
+.section-label { font-size: 0.74rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 -6px; }
+.controls { display: grid; gap: 12px; }
+.ctl { display: grid; gap: 3px; }
+.ctl-top { display: flex; justify-content: space-between; gap: 8px; font-size: 0.88rem; }
+.ctl-top output { font-family: var(--f-num); font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ctl small { color: var(--muted); font-size: 0.78rem; line-height: 1.3; }
+input[type="range"] { width: 100%; accent-color: var(--accent); margin: 2px 0; }
+select { font: inherit; font-size: 0.88rem; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; width: 100%; }
+.checks { display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.88rem; }
+.checks label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.checks input { accent-color: var(--accent); }
+.fine { font-size: 0.8rem; color: var(--muted); margin: 0; }
+.fine kbd { font-size: 0.75rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+
+<article id="article">
+  <p class="kicker">Hands-free reading test</p>
+  <h1>Read this page <em>without touching it</em></h1>
+  <p class="lede">Start the camera, then read. Look toward the bottom of the screen or tip your head down to move forward. Look up or tip your head up to go back. Look at the middle and the page holds still.</p>
+
+  <p>There is no calibration step. The page watches your face for a moment, takes that as your resting position, and from then on only reacts when your eyes or your head move clearly away from it. If you shift in your chair, it quietly re-learns where neutral is.</p>
+
+  <p>The panel shows three meters. The top one is the only one that drives the page: it blends the eye signal and the head signal into a single number. The shaded band in the middle is the dead zone. Hold the marker outside the band for a moment and scrolling starts. Bring it back in and scrolling stops.</p>
+
+  <h2>How your eyes actually read</h2>
+  <p>Reading feels like a smooth glide along each line, but the eyes do something closer to hopping. They jump in quick movements called saccades, then pause on a word long enough to take it in. Almost all of the information reaches you during the pauses, called fixations.</p>
+
+  <div class="figure-row">
+    <div><b>200–250 ms</b><span>typical fixation while reading</span></div>
+    <div><b>7–9 letters</b><span>average length of a forward saccade</span></div>
+    <div><b>10–15%</b><span>of saccades jump backward to re-read</span></div>
+  </div>
+
+  <p>At the end of each line the eyes make a longer jump, the return sweep, down to the start of the next line. Over a paragraph, your gaze drifts steadily downward in small steps. That drift is the whole idea behind gaze scrolling: when your reading position approaches the bottom of the screen, the page should bring new text up to meet you.</p>
+
+  <p>The perceptual span is lopsided too. Readers of left-to-right languages take in roughly three or four letters to the left of a fixation and around fourteen or fifteen to the right. The eyes are always slightly ahead of where you think they are.</p>
+
+  <h2>Why up and down is the hard direction</h2>
+  <p>A webcam sees your eyes as a few dozen pixels each. Left and right movement is the easy case, because the dark iris slides between two clearly visible corners of the eye. Vertical movement is subtler for three reasons.</p>
+  <p>First, the upper eyelid follows your gaze. When you look down, the lid lowers with the eye, so the visible opening changes shape and partly covers the iris. To a camera, looking down can resemble a slow blink. Second, the vertical range of the eye is smaller than the horizontal one, and the iris is already partly hidden by both lids at rest. Third, on a phone held at reading distance the whole screen spans only a small angle of your vision, so the difference between looking at the top and the bottom of the screen is a few degrees of eye rotation.</p>
+  <p>This is why the page does not try to compute where on the screen you are looking. It only asks a simpler question: are you looking further up or down than you were a moment ago?</p>
+
+  <h2>The three signals</h2>
+  <p><strong>Eye blendshapes.</strong> The face model scores dozens of facial expressions on a scale from zero to one. Four of them describe where the eyes are turned: looking up and looking down, for each eye. The page subtracts the "up" score from the "down" score. These scores are fairly weak on their own, and they rise a little when you squint.</p>
+  <p><strong>Iris position.</strong> The model also places points on the eye corners and the center of each iris. The page measures how far the iris center sits above or below the line between the two corners, divided by the width of the eye. This makes the value independent of how close you sit to the camera.</p>
+  <p><strong>Head pitch.</strong> Using the forehead and chin points along with the model's depth estimate, the page works out how far your head is tipped forward or back. This is the most stable of the three, especially on a phone. Most people move their head a little when they look down anyway, so mixing it in makes the result more robust.</p>
+  <p>The eye source menu lets you use the blendshapes, the iris geometry, or both averaged. The mix slider sets how much the eyes count compared with the head. Slide it fully to one side to test each signal alone.</p>
+
+  <h2>Neutral, without calibration</h2>
+  <p>Every face sits differently in front of a camera. One person's neutral head angle is another person's slight nod. Instead of asking you to look at dots on the screen, the page keeps a running baseline for each signal and measures everything relative to it.</p>
+  <p>The baseline follows you slowly while you are not scrolling, so a change of posture is absorbed within a few seconds. While the page is scrolling, the baseline is frozen. Otherwise holding your gaze down would gradually be treated as the new neutral and scrolling would stop by itself. If things ever feel off, the re-zero button, or the <kbd>Z</kbd> key, takes your current pose as neutral immediately.</p>
+
+  <h2>The Midas touch problem</h2>
+  <p>In 1990, the researcher Robert Jacob gave a name to the central difficulty of using the eyes as an input device. Everything you look at responds, the way everything King Midas touched turned to gold. The eyes are always moving, and most of those movements are not commands. They are just looking.</p>
+  <p>Gaze interfaces deal with this in a few standard ways. A dwell time requires the gaze to rest somewhere for a set period before anything happens. A dead zone ignores small movements entirely. A clutch, like a key press or a switch, lets the person decide when the eyes are in control. This page uses all three: the dwell slider, the dead zone slider, and the pause button, which you can also trigger with the space bar or by tapping the status pill.</p>
+  <blockquote>Reading is one of the few tasks where the eyes moving toward the bottom of the screen and the person wanting more text are close to the same thing. That is what makes it a good test case.</blockquote>
+
+  <h2>Tuning it</h2>
+  <ul class="tips">
+    <li>If the page scrolls when you do not want it to, widen the dead zone or lengthen the dwell.</li>
+    <li>If you have to look very far down before anything happens, raise the eye sensitivity or lower the head range.</li>
+    <li>If a meter moves the wrong way, tick the matching invert box.</li>
+    <li>If the markers jitter, raise the smoothing. If scrolling starts and stops late, lower it.</li>
+    <li>If it scrolls too fast to read, lower the speed. Scroll speed grows with how far past the dead zone you look or tilt.</li>
+    <li>Glasses with strong reflections and a bright window behind you both hurt the eye signals. The head signal is much less affected.</li>
+  </ul>
+
+  <h2>Phones</h2>
+  <p>On a phone the front camera is close to your face, which helps the face model, but the screen covers so little of your view that eye-only scrolling is hard to trigger reliably. Try moving the mix slider toward the head side first. A small nod is easy to make and easy for the camera to see. Hold the phone at a steady angle; tilting the phone has the same effect on the camera as tilting your head the other way.</p>
+  <p>The camera only works on pages served over HTTPS or from your own computer as <code>localhost</code>. Nothing is uploaded. The video frames are analysed in your browser by Google's MediaPipe face model, and only the resulting numbers are used.</p>
+
+  <h2>Something longer to read</h2>
+  <p>To give the scrolling something to do, here is a short history of the problem this page is trying to solve.</p>
+  <p>The earliest serious eye tracking was done in the late nineteenth century by attaching small cups or levers directly to the eye. Researchers studying reading noticed, to their surprise, that the eyes did not move smoothly along lines of text at all. They jumped. The French ophthalmologist Louis Émile Javal is often credited with describing these jumps in the 1870s, and the word saccade comes from a French term for a jerk or a sudden pull on a horse's reins.</p>
+  <p>Through the twentieth century, trackers moved from the eye itself to light reflected off it. Shining a light at the eye and tracking its reflection on the cornea, together with the position of the pupil, became the standard approach. It still is: dedicated eye trackers use infrared light, which the pupil absorbs and the iris reflects, giving the camera a high-contrast target regardless of eye color.</p>
+  <p>A webcam has none of these advantages. It uses visible light, an unknown lens, an unknown distance and an unknown screen size. What changed in the last decade is that machine learning models became small enough to run in a browser and good enough to place hundreds of points on a face in real time. That does not turn a webcam into a lab instrument, but it does make coarse, relative signals like "looking further down than before" practical on almost any device.</p>
+  <p>Those coarse signals are enough for a surprising number of tasks. Scrolling is one. Others include noticing when someone looks away from a video, pausing narration when the reader's eyes leave the text, or letting a person with limited hand movement page through a document. In each case, the design work is less about precision and more about deciding when the eyes mean something and when they are simply looking.</p>
+  <p>If you have read this far without touching the screen, the test has done its job. If you had to fight it, the sliders are there to find a setting that works for your face, your camera and your light.</p>
+
+  <p class="end-mark">End of the page. Look up to scroll back.<br>Built on MediaPipe Face Landmarker (Apache-2.0). Runs entirely on this device.</p>
+</article>
+
+<aside class="panel" id="panel" data-expanded="false" aria-label="Eye scroll controls">
+  <div class="panel-top">
+    <div class="row spread">
+      <span class="brand">Eyescroll</span>
+      <button class="status" id="status" data-state="off" type="button" title="Pause or resume scrolling (Space)">
+        <span class="dot"></span><span id="statusText">Camera off</span><span class="fill" id="dwellFill"></span>
+      </button>
+    </div>
+    <div class="meter big" id="m-intent">
+      <div class="meter-label"><strong>Scroll intent</strong><output id="o-intent">–</output></div>
+      <div class="track"><span class="band"></span><span class="mid"></span><span class="marker"></span></div>
+      <div class="ends"><span>up</span><span>down</span></div>
+    </div>
+    <div class="row">
+      <button class="btn primary" id="startBtn" type="button">Start camera</button>
+      <button class="btn" id="zeroBtn" type="button" hidden>Re-zero</button>
+      <button class="btn" id="tuneBtn" type="button" aria-expanded="false" aria-controls="panelBody">Tune</button>
+    </div>
+  </div>
+
+  <div class="panel-body" id="panelBody">
+    <div class="cam">
+      <video id="video" playsinline muted></video>
+      <canvas id="overlay"></canvas>
+      <p class="cam-note" id="camNote">The camera preview appears here. Video stays on this device.</p>
+    </div>
+
+    <div class="meters">
+      <div class="meter" id="m-eye">
+        <div class="meter-label"><strong>Eyes</strong><output id="o-eye">–</output></div>
+        <div class="track"><span class="band"></span><span class="mid"></span><span class="marker"></span></div>
+      </div>
+      <div class="meter" id="m-head">
+        <div class="meter-label"><strong>Head</strong><output id="o-head">–</output></div>
+        <div class="track"><span class="band"></span><span class="mid"></span><span class="marker"></span></div>
+      </div>
+    </div>
+
+    <p class="section-label">Signals</p>
+    <div class="controls">
+      <div class="ctl">
+        <div class="ctl-top"><label for="eyeSource">Eye source</label></div>
+        <select id="eyeSource">
+          <option value="both">Blendshapes + iris, averaged</option>
+          <option value="blend">Blendshapes only</option>
+          <option value="iris">Iris geometry only</option>
+        </select>
+      </div>
+      <div class="ctl" data-key="mix"></div>
+      <div class="ctl" data-key="eyeGain"></div>
+      <div class="ctl" data-key="headRange"></div>
+      <div class="checks">
+        <label><input type="checkbox" id="invertEye"> Invert eyes</label>
+        <label><input type="checkbox" id="invertHead"> Invert head</label>
+      </div>
+    </div>
+
+    <p class="section-label">Behaviour</p>
+    <div class="controls">
+      <div class="ctl" data-key="dead"></div>
+      <div class="ctl" data-key="dwell"></div>
+      <div class="ctl" data-key="speed"></div>
+      <div class="ctl" data-key="smooth"></div>
+      <div class="ctl" data-key="adapt"></div>
+    </div>
+
+    <div class="row">
+      <button class="btn" id="resetBtn" type="button">Reset settings</button>
+    </div>
+    <p class="fine"><kbd>Space</kbd> pause or resume · <kbd>Z</kbd> re-zero</p>
+  </div>
+</aside>
+
+<script type="module">
+import { FilesetResolver, FaceLandmarker } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1/vision_bundle.mjs";
+
+const WASM_URL = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1/wasm";
+const MODEL_URL = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task";
+const RANGE = 1.5;        // meters show -1.5 … +1.5
+const STORE_KEY = "eyescroll.settings.v1";
+
+/* ---------- Settings ---------- */
+const DEFAULTS = {
+  mix: 0.5, eyeGain: 1.0, headRange: 12, dead: 0.35, dwell: 450,
+  speed: 650, smooth: 0.5, adapt: 8, eyeSource: "both", invertEye: false, invertHead: false,
+};
+const SLIDERS = {
+  mix:       { label: "Eyes ↔ head mix", min: 0, max: 1, step: 0.05, fmt: v => `${Math.round(v * 100)}% eyes`, hint: "0% uses only the head, 100% only the eyes." },
+  eyeGain:   { label: "Eye sensitivity", min: 0.3, max: 3, step: 0.1, fmt: v => `×${v.toFixed(1)}` },
+  headRange: { label: "Head range", min: 4, max: 30, step: 1, fmt: v => `${v}°`, hint: "Tilt needed to reach full scale." },
+  dead:      { label: "Dead zone", min: 0.1, max: 0.9, step: 0.05, fmt: v => v.toFixed(2) },
+  dwell:     { label: "Dwell before scrolling", min: 0, max: 1500, step: 50, fmt: v => `${v} ms` },
+  speed:     { label: "Max speed", min: 100, max: 2000, step: 50, fmt: v => `${v} px/s` },
+  smooth:    { label: "Smoothing", min: 0, max: 1, step: 0.05, fmt: v => v.toFixed(2) },
+  adapt:     { label: "Neutral follows you over", min: 2, max: 30, step: 1, fmt: v => `${v} s`, hint: "How quickly a new posture becomes neutral. Frozen while scrolling." },
+};
+
+let S = { ...DEFAULTS };
+try { Object.assign(S, JSON.parse(localStorage.getItem(STORE_KEY) || "{}")); } catch (_) {}
+const save = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (_) {} };
+
+const $ = id => document.getElementById(id);
+
+function buildSliders() {
+  document.querySelectorAll(".ctl[data-key]").forEach(el => {
+    const key = el.dataset.key, c = SLIDERS[key];
+    el.innerHTML = `
+      <div class="ctl-top"><label for="s-${key}">${c.label}</label><output id="v-${key}"></output></div>
+      <input type="range" id="s-${key}" min="${c.min}" max="${c.max}" step="${c.step}">
+      ${c.hint ? `<small>${c.hint}</small>` : ""}`;
+    const input = el.querySelector("input"), out = el.querySelector("output");
+    input.value = S[key]; out.textContent = c.fmt(S[key]);
+    input.addEventListener("input", () => {
+      S[key] = Number(input.value); out.textContent = c.fmt(S[key]); save();
+      if (key === "smooth") retuneFilters();
+      if (key === "dead") paintBands();
+    });
+  });
+  $("eyeSource").value = S.eyeSource;
+  $("eyeSource").addEventListener("change", e => { S.eyeSource = e.target.value; save(); rezero(); });
+  for (const k of ["invertEye", "invertHead"]) {
+    $(k).checked = S[k];
+    $(k).addEventListener("change", e => { S[k] = e.target.checked; save(); });
+  }
+}
+function syncControls() {
+  for (const key of Object.keys(SLIDERS)) {
+    $(`s-${key}`).value = S[key]; $(`v-${key}`).textContent = SLIDERS[key].fmt(S[key]);
+  }
+  $("eyeSource").value = S.eyeSource; $("invertEye").checked = S.invertEye; $("invertHead").checked = S.invertHead;
+}
+
+/* ---------- Meters ---------- */
+const meters = {
+  intent: { el: $("m-intent"), out: $("o-intent") },
+  eye: { el: $("m-eye"), out: $("o-eye") },
+  head: { el: $("m-head"), out: $("o-head") },
+};
+for (const m of Object.values(meters)) {
+  m.marker = m.el.querySelector(".marker"); m.band = m.el.querySelector(".band");
+}
+const pct = v => ((Math.max(-RANGE, Math.min(RANGE, v)) + RANGE) / (2 * RANGE)) * 100;
+function paintBands() {
+  for (const m of Object.values(meters)) {
+    m.band.style.left = pct(-S.dead) + "%";
+    m.band.style.width = (pct(S.dead) - pct(-S.dead)) + "%";
+  }
+}
+function setMeter(m, v) { m.marker.style.left = pct(v) + "%"; }
+
+/* ---------- One-Euro filter ---------- */
+class OneEuro {
+  constructor(minCutoff, beta) { this.minCutoff = minCutoff; this.beta = beta; this.dCutoff = 1; this.reset(); }
+  reset() { this.x = null; this.dx = 0; this.t = null; }
+  static a(cutoff, dt) { const tau = 1 / (2 * Math.PI * cutoff); return 1 / (1 + tau / dt); }
+  filter(v, tMs) {
+    if (this.x === null) { this.x = v; this.t = tMs; return v; }
+    const dt = Math.max(1e-3, (tMs - this.t) / 1000); this.t = tMs;
+    const d = (v - this.x) / dt;
+    this.dx += OneEuro.a(this.dCutoff, dt) * (d - this.dx);
+    const cutoff = this.minCutoff + this.beta * Math.abs(this.dx);
+    this.x += OneEuro.a(cutoff, dt) * (v - this.x);
+    return this.x;
+  }
+}
+const minCutoffFor = s => 4 * Math.pow(0.3 / 4, s);   // 0 → 4 Hz (light), 1 → 0.3 Hz (heavy)
+const fEye = new OneEuro(minCutoffFor(S.smooth), 0.3);
+const fHead = new OneEuro(minCutoffFor(S.smooth), 0.02);
+function retuneFilters() { fEye.minCutoff = fHead.minCutoff = minCutoffFor(S.smooth); }
+
+/* ---------- Signal extraction ---------- */
+const EYES = [ { corners: [33, 133] }, { corners: [362, 263] } ];
+const IRIS_CENTERS = [468, 473];
+const BS_SCALE = 0.3;     // blendshape up/down difference that counts as "full"
+const IRIS_SCALE = 0.06;  // iris offset / eye width that counts as "full"
+
+function irisSignal(lm, W, H) {
+  if (lm.length < 478) return null;
+  const P = i => ({ x: lm[i].x * W, y: lm[i].y * H });
+  let sum = 0, n = 0;
+  for (const ci of IRIS_CENTERS) {
+    const c = P(ci);
+    let best = null, bestD = Infinity;
+    for (const eye of EYES) {
+      const a = P(eye.corners[0]), b = P(eye.corners[1]);
+      const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+      const d = Math.hypot(c.x - mid.x, c.y - mid.y);
+      if (d < bestD) { bestD = d; best = { a, b, mid }; }
+    }
+    const w = Math.hypot(best.b.x - best.a.x, best.b.y - best.a.y);
+    if (w < 1) continue;
+    // signed distance of iris center below the corner line (y grows downward in the image)
+    const ux = (best.b.x - best.a.x) / w, uy = (best.b.y - best.a.y) / w;
+    const nx = -uy, ny = ux;                       // normal to the corner line
+    let off = ((c.x - best.mid.x) * nx + (c.y - best.mid.y) * ny) / w;
+    if (ny < 0) off = -off;                         // make "down in the image" positive
+    sum += off; n++;
+  }
+  return n ? sum / n : null;
+}
+
+function blendSignal(cats) {
+  const g = name => (cats.find(c => c.categoryName === name) || { score: 0 }).score;
+  const down = (g("eyeLookDownLeft") + g("eyeLookDownRight")) / 2;
+  const up = (g("eyeLookUpLeft") + g("eyeLookUpRight")) / 2;
+  const blink = (g("eyeBlinkLeft") + g("eyeBlinkRight")) / 2;
+  return { v: down - up, blink };
+}
+
+function headPitchDeg(lm, W, H) {
+  // forehead (10) → chin (152); z uses roughly the same scale as x (image width), larger = farther away
+  const f = lm[10], c = lm[152];
+  const dy = (c.y - f.y) * H, dz = (c.z - f.z) * W;
+  return Math.atan2(dz, dy) * 180 / Math.PI;       // positive when the chin tucks back (head tipped down)
+}
+
+/* ---------- State ---------- */
+let landmarker = null, stream = null, running = false;
+let paused = false;
+let state = "off";
+let lastVideoTime = -1;
+let eyeF = 0, headF = 0, eyeB = 0, headB = 0;
+let baseSamples = [], baselineReady = false;
+let lastFaceAt = 0, lastFrameAt = 0;
+let armDir = 0, armStart = 0, scrollDir = 0;
+let vTarget = 0, v = 0, acc = 0, lastTick = 0;
+let rawEye = { bs: 0, iris: 0 }, rawPitch = 0, intent = 0, eN = 0, hN = 0;
+
+const video = $("video"), overlay = $("overlay"), ctx = overlay.getContext("2d");
+const statusEl = $("status"), statusText = $("statusText"), dwellFill = $("dwellFill");
+
+const LABELS = {
+  off: "Camera off", loading: "Loading model…", warming: "Finding neutral…", idle: "Watching",
+  arming: "Hold…", scrolling: "Scrolling", paused: "Paused", noface: "No face", error: "Camera blocked",
+};
+function setState(s, extra) {
+  if (s !== state) { state = s; statusEl.dataset.state = s; }
+  let text = LABELS[s];
+  if (s === "scrolling") text = scrollDir > 0 ? "Scrolling down" : "Scrolling up";
+  if (extra) text = extra;
+  if (statusText.textContent !== text) statusText.textContent = text;
+}
+
+function rezero() {
+  baseSamples = []; baselineReady = false; fEye.reset(); fHead.reset();
+  armDir = 0; scrollDir = 0; vTarget = 0;
+}
+
+/* ---------- Camera + model ---------- */
+async function start() {
+  const btn = $("startBtn");
+  if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
+    setState("error", "Needs HTTPS");
+    $("camNote").textContent = "The camera only works when this page is opened over https:// or from localhost.";
+    openPanel(true); return;
+  }
+  btn.disabled = true; setState("loading");
+  try {
+    if (!landmarker) {
+      const fileset = await FilesetResolver.forVisionTasks(WASM_URL);
+      const opts = d => ({
+        baseOptions: { modelAssetPath: MODEL_URL, delegate: d },
+        runningMode: "VIDEO", numFaces: 1,
+        outputFaceBlendshapes: true, outputFacialTransformationMatrixes: false,
+      });
+      try { landmarker = await FaceLandmarker.createFromOptions(fileset, opts("GPU")); }
+      catch (_) { landmarker = await FaceLandmarker.createFromOptions(fileset, opts("CPU")); }
+    }
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } }, audio: false,
+    });
+    video.srcObject = stream;
+    await video.play();
+    overlay.width = video.videoWidth; overlay.height = video.videoHeight;
+    $("camNote").hidden = true;
+    btn.hidden = true; $("zeroBtn").hidden = false;
+    running = true; rezero(); setState("warming");
+    lastTick = performance.now();
+  } catch (err) {
+    console.error(err);
+    btn.disabled = false;
+    const denied = err && (err.name === "NotAllowedError" || err.name === "SecurityError");
+    setState("error", denied ? "Camera blocked" : "Could not start");
+    $("camNote").textContent = denied
+      ? "Camera permission was refused. Allow it in the browser's site settings, then press Start camera again."
+      : `Could not start: ${err?.message || err}. Check that no other app is using the camera.`;
+    openPanel(true);
+  }
+}
+
+/* ---------- Main loop ---------- */
+function processFrame(now) {
+  if (video.currentTime === lastVideoTime) return;
+  lastVideoTime = video.currentTime;
+  const W = video.videoWidth, H = video.videoHeight;
+  const res = landmarker.detectForVideo(video, now);
+  const lm = res.faceLandmarks?.[0];
+  ctx.clearRect(0, 0, overlay.width, overlay.height);
+  if (!lm) return;
+  lastFaceAt = now;
+
+  const cats = res.faceBlendshapes?.[0]?.categories || [];
+  const bs = blendSignal(cats);
+  const iris = irisSignal(lm, W, H);
+  rawEye = { bs: bs.v, iris: iris ?? 0 };
+  rawPitch = headPitchDeg(lm, W, H);
+
+  let eyeUnit;
+  const bsU = bs.v / BS_SCALE, irU = iris === null ? null : iris / IRIS_SCALE;
+  if (S.eyeSource === "blend" || irU === null) eyeUnit = bsU;
+  else if (S.eyeSource === "iris") eyeUnit = irU;
+  else eyeUnit = (bsU + irU) / 2;
+
+  const blinking = bs.blink > 0.55;
+  if (!blinking) eyeF = fEye.filter(eyeUnit, now);
+  headF = fHead.filter(rawPitch, now);
+
+  const dt = lastFrameAt ? Math.min(0.2, (now - lastFrameAt) / 1000) : 0;
+  lastFrameAt = now;
+
+  if (!baselineReady) {
+    baseSamples.push([eyeF, headF]);
+    if (baseSamples.length >= 15) {
+      eyeB = baseSamples.reduce((s, p) => s + p[0], 0) / baseSamples.length;
+      headB = baseSamples.reduce((s, p) => s + p[1], 0) / baseSamples.length;
+      baselineReady = true;
+    }
+  }
+
+  eN = (eyeF - eyeB) * S.eyeGain * (S.invertEye ? -1 : 1);
+  hN = ((headF - headB) / S.headRange) * (S.invertHead ? -1 : 1);
+  intent = Math.max(-RANGE, Math.min(RANGE, S.mix * eN + (1 - S.mix) * hN));
+
+  // Neutral follows slowly while not scrolling; frozen while scrolling.
+  if (baselineReady && state !== "scrolling" && dt > 0) {
+    const k = Math.abs(intent) < S.dead ? 1 : 0.25;
+    const a = 1 - Math.exp(-dt * k / S.adapt);
+    if (!blinking) eyeB += (eyeF - eyeB) * a;
+    headB += (headF - headB) * a;
+  }
+
+  drawOverlay(lm, W, H);
+}
+
+let accentColor = "";
+function drawOverlay(lm, W, H) {
+  if (!accentColor) accentColor = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#1f5fbf";
+  const accent = accentColor;
+  ctx.fillStyle = accent; ctx.strokeStyle = accent; ctx.lineWidth = 2;
+  for (const i of [33, 133, 362, 263]) { ctx.beginPath(); ctx.arc(lm[i].x * W, lm[i].y * H, 2.5, 0, 7); ctx.fill(); }
+  if (lm.length >= 478) for (const i of IRIS_CENTERS) {
+    ctx.beginPath(); ctx.arc(lm[i].x * W, lm[i].y * H, 4, 0, 7); ctx.stroke();
+  }
+  ctx.globalAlpha = 0.5;
+  ctx.beginPath(); ctx.moveTo(lm[10].x * W, lm[10].y * H); ctx.lineTo(lm[152].x * W, lm[152].y * H); ctx.stroke();
+  ctx.globalAlpha = 1;
+}
+
+function decide(now) {
+  if (!running) return;
+  if (paused) { vTarget = 0; armDir = 0; scrollDir = 0; setState("paused"); return; }
+  if (now - lastFaceAt > 400) { vTarget = 0; armDir = 0; scrollDir = 0; setState("noface"); return; }
+  if (!baselineReady) { vTarget = 0; setState("warming"); return; }
+
+  const dir = intent > S.dead ? 1 : intent < -S.dead ? -1 : 0;
+  if (state === "scrolling") {
+    if (Math.abs(intent) < S.dead * 0.7 || Math.sign(intent) !== scrollDir) {
+      scrollDir = 0; armDir = 0; vTarget = 0; setState("idle");
+    } else {
+      const over = Math.min(1, (Math.abs(intent) - S.dead * 0.7) / (1 - S.dead * 0.7));
+      vTarget = scrollDir * S.speed * Math.max(0.15, Math.pow(over, 1.5));
+      setState("scrolling");
+    }
+  } else if (dir !== 0) {
+    if (dir !== armDir) { armDir = dir; armStart = now; }
+    const p = S.dwell ? (now - armStart) / S.dwell : 1;
+    if (p >= 1) { scrollDir = dir; setState("scrolling"); dwellFill.style.width = ""; }
+    else { setState("arming", dir > 0 ? "Hold… down" : "Hold… up"); dwellFill.style.width = (p * 100) + "%"; }
+    vTarget = 0;
+  } else {
+    armDir = 0; vTarget = 0; setState("idle");
+  }
+  if (state !== "arming") dwellFill.style.width = state === "scrolling" ? "" : "0";
+}
+
+function scrollStep(now) {
+  const dt = Math.min(0.1, (now - lastTick) / 1000); lastTick = now;
+  v += (vTarget - v) * (1 - Math.exp(-dt / 0.12));
+  if (Math.abs(v) < 1 && vTarget === 0) { v = 0; acc = 0; return; }
+  acc += v * dt;
+  const whole = acc > 0 ? Math.floor(acc) : Math.ceil(acc);
+  if (whole !== 0) { window.scrollBy(0, whole); acc -= whole; }
+}
+
+function render() {
+  setMeter(meters.intent, intent); setMeter(meters.eye, eN); setMeter(meters.head, hN);
+  meters.intent.el.dataset.dir = state === "scrolling" ? String(scrollDir) : "0";
+  meters.intent.out.textContent = (intent >= 0 ? "+" : "") + intent.toFixed(2);
+  meters.eye.out.textContent = `blend ${fmtS(rawEye.bs)} · iris ${fmtS(rawEye.iris, 3)}`;
+  meters.head.out.textContent = `${fmtS(rawPitch, 1)}° (neutral ${headB.toFixed(1)}°)`;
+}
+const fmtS = (x, d = 2) => (x >= 0 ? "+" : "") + x.toFixed(d);
+
+function loop() {
+  const now = performance.now();
+  if (running && video.readyState >= 2) {
+    try { processFrame(now); } catch (e) { console.error(e); }
+  }
+  decide(now);
+  scrollStep(now);
+  if (running) render();
+  requestAnimationFrame(loop);
+}
+
+/* ---------- UI wiring ---------- */
+function togglePause() {
+  if (!running) return;
+  paused = !paused;
+  if (!paused) { rezero(); setState("warming"); }
+}
+function openPanel(force) {
+  const p = $("panel");
+  const open = force === undefined ? p.dataset.expanded !== "true" : force;
+  p.dataset.expanded = String(open);
+  $("tuneBtn").setAttribute("aria-expanded", String(open));
+  $("tuneBtn").textContent = open ? "Close" : "Tune";
+}
+
+$("startBtn").addEventListener("click", start);
+$("zeroBtn").addEventListener("click", () => { rezero(); });
+$("tuneBtn").addEventListener("click", () => openPanel());
+statusEl.addEventListener("click", togglePause);
+$("resetBtn").addEventListener("click", () => {
+  S = { ...DEFAULTS }; save(); syncControls(); retuneFilters(); paintBands(); rezero();
+});
+document.addEventListener("keydown", e => {
+  if (e.target.closest("input, select, textarea, button")) return;
+  if (e.code === "Space" && running) { e.preventDefault(); togglePause(); }
+  if (e.key === "z" || e.key === "Z") rezero();
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) { vTarget = 0; v = 0; }
+  else if (running) rezero();
+});
+
+buildSliders();
+paintBands();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
